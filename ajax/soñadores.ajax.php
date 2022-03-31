@@ -60,8 +60,9 @@ public function ajaxEstadoSoñador()
             
             $item1 = $this->activarSoñador;
             $item2 = $this->activarId;
+            $item3 = $this->documentoSoñador;
             
-            $respuesta = ControladorSoñadores::ctrEstadoSoñadores($item1, $item2);
+            $respuesta = ControladorSoñadores::ctrEstadoSoñadores($item1, $item2, $item3);
 
             // var_dump ($datos);
 
@@ -110,11 +111,13 @@ if (isset($_POST["activarSoñador"])) {
         $activarSoñador                     = new AjaxSoñadores();
         $activarSoñador->activarSoñador     = 0;
         $activarSoñador->activarId          = $_POST["activarId"];
+        $activarSoñador->documentoSoñador   = $_POST["documentoSoñador"];
         $activarSoñador->ajaxEstadoSoñador();
     }else{
         $activarSoñador                     = new AjaxSoñadores();
         $activarSoñador->activarSoñador     = 1;
         $activarSoñador->activarId          = $_POST["activarId"];
+        $activarSoñador->documentoSoñador   = $_POST["documentoSoñador"];
         $activarSoñador->ajaxEstadoSoñador();
     }
 

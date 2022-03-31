@@ -63,28 +63,29 @@ class ModeloUsuario
 
     
 
-    public static function mdlEstadoUsuario($tabla, $item1, $item2)
+    // public static function mdlEstadoUsuario($tabla, $item1, $item2, $item3)
     
-    {
-        $stmt = Conexion::conectar()->prepare("UPDATE $tabla SET estado = :item1 WHERE usuario = :item2");
+    // {
+    //     $stmt = Conexion::conectar()->prepare("UPDATE $tabla SET estado = :item1 WHERE usuario = :item2");
 
-        $stmt->bindValue(":item1", $item1, PDO::PARAM_INT);
-        $stmt->bindValue(":item2", $item2, PDO::PARAM_INT);
+    //     $stmt->bindValue(":item1", $item1, PDO::PARAM_INT);
+    //     $stmt->bindValue(":item2", $item2, PDO::PARAM_INT);
+    //     $stmt->bindValue(":item3", $item3, PDO::PARAM_INT);
 
-        if ($stmt->execute()) {
+    //     if ($stmt->execute()) {
 
-            return "ok";
+    //         return "ok";
 
-        } else {
+    //     } else {
 
-            return "error";
+    //         return "error";
 
-        }
+    //     }
 
-        $stmt->close();
-        $stmt = null;
+    //     $stmt->close();
+    //     $stmt = null;
 
-    }
+    // }
 
 
 }

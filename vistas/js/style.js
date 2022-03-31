@@ -109,9 +109,11 @@ $('#agregarSoñador').submit(function(e){
 $('#tablaSoñadores tbody').on("click", ".btnActivar", function() {
     var idSoñador = $(this).attr("idSoñador");
     var estadoSoñador = $(this).attr("estadoSoñador");
+    var documentoSoñador = $(this).attr("documentoSoñador");
     var datos = new FormData();
     datos.append("activarId", idSoñador);
     datos.append("activarSoñador", estadoSoñador);
+    datos.append("documentoSoñador", documentoSoñador);
     
     $.ajax({
       url: "ajax/soñadores.ajax.php",

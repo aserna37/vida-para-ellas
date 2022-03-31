@@ -80,13 +80,21 @@ public static function mdlIngresarSoñador($tabla, $datos)
 
 //**************** */ 
 
-public static function mdlEstadoSoñador($tabla, $item1, $item2)
+public static function mdlEstadoSoñador($tabla, $tabla1, $item1, $item2, $item3)
     
     {
-        $stmt = Conexion::conectar()->prepare("UPDATE $tabla SET estado = :item1 WHERE id = :item2");
+        
+        
+        // $stmt = Conexion::conectar()->prepare("UPDATE $tabla SET estado = :item1 WHERE id = :item2");
 
+        $stmt = Conexion::conectar()->prepare("UPDATE $tabla INNER JOIN $tabla1
+                                               ON ($tabla.documento = $tabla1.usuario)
+                                               SET $tabla.estado = :item1, $tabla1.estado = :item1
+                                               WHERE $tabla.documento = :item3");
+        
         $stmt->bindValue(":item1", $item1, PDO::PARAM_INT);
         $stmt->bindValue(":item2", $item2, PDO::PARAM_INT);
+        $stmt->bindValue(":item3", $item3, PDO::PARAM_INT);
 
         if ($stmt->execute()) {
 

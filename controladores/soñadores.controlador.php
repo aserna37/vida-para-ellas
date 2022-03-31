@@ -38,10 +38,13 @@ class ControladorSoñadores
     }
 
 
-    public static function ctrEstadoSoñadores($item1, $item2)
+    public static function ctrEstadoSoñadores($item1, $item2, $item3)
     {
 
-        $respuesta = ModeloSoñadores::mdlEstadoSoñador("personas", $item1, $item2);
+        $tabla = "personas";
+        $tabla1 = "usuarios";
+
+        $respuesta = ModeloSoñadores::mdlEstadoSoñador($tabla, $tabla1, $item1, $item2, $item3);
         
         return $respuesta;
 
