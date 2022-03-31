@@ -1,0 +1,154 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Lato !important;
+}
+
+
+#wrap-preload{
+    position: fixed;
+    z-index: 10;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: #fff;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity .5s ease, visibility .5s ease;
+  }
+  
+  #wrap-preload.close{
+    opacity: 0;
+    visibility: hidden;
+  }
+  
+  #wrap-preload > img.gif{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    /* transform: translate3d(-50%, -50%, 0); */
+  }
+
+.menu{
+    margin-top: -60px;
+}
+
+
+[class^='imghvr-'],
+[class*=' imghvr-'] {
+  background-color: white !important;
+}
+
+figcaption > h5{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 30px;
+  font-size: 20px;
+
+}
+
+.nombre_menu > .container{
+  width: 100%;
+  padding: 10px;
+  color: white;
+  margin-bottom: 50px;
+  background: rgb(117,82,255) !important;
+    background: linear-gradient(90deg, rgba(117,82,255,1) 0%, rgba(139,128,255,1) 50%, rgba(117,82,255,1) 100%) !important;
+}
+
+.retorno > a{
+  margin-top: -20px;
+  background-color: #004B6F !important;
+  color: white;
+  margin-right: 20px;
+  -webkit-box-shadow: 9px 10px 15px -9px #000000; 
+  box-shadow: 9px 10px 15px -9px #000000;
+}
+
+.retorno > a:hover{
+  color: rgb(212, 212, 212) !important;
+}
+
+.btnnuevoSoñador{
+  margin-top: -25px !important;
+  transform: translate(-12px);
+  }
+
+.btnnuevoSoñador > a{
+  background-color: rgb(117,82,255) !important;
+  color: white;
+  width: 200px;
+  -webkit-box-shadow: 9px 10px 15px -9px #000000; 
+  box-shadow: 9px 10px 15px -9px #000000;
+}
+
+.form-control-sm{
+  border: 1px solid white !important;
+  outline: none !important;
+  outline-width: 0 !important;
+  box-shadow: none !important;
+  background: rgb(233, 232, 232) !important;
+  
+}
+
+.form-control-sm:focus{
+  box-shadow: 0 1px 1px rgba(229, 103, 23, 0.075)inset, 0 0 8px rgb(117,82,255) !important;
+}
+
+.btnGuardar{
+  background-color: rgb(117,82,255) !important;
+  color: white !important;
+  width: 150px !important;
+}
+
+.btnGuardar:hover{
+  background-color: #8B80FF !important;
+  transition: .3s ease-in !important ;
+}
+
+.btnCancelar{
+  background-color: #004B6F !important;
+  color: white !important;
+  width: 150px !important;
+}
+
+
+
+
+
+
+
+
+@media(max-width: 380px) {
+  
+  lord-icon{
+    width: 50px !important;
+    height: 50px !important;
+  }
+
+  .btnnuevoSoñador{
+    margin-top: -25px !important;
+    transform: translate(0px);
+    }
+  
+  .btnnuevoSoñador > a{
+    width: 100% !important;
+  }
+}
+
+
+
+  
+            
+      
+
+
+
+
