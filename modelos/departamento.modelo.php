@@ -43,7 +43,10 @@ class ModeloDepartamentos
 
         if ($item != null) {
 
-            $stmt = Conexion::conectar()->prepare("SELECT municipios.nombre as Mun_nombre, departamentos.nombre as Dep_nombre
+            $stmt = Conexion::conectar()->prepare("SELECT municipios.nombre as Mun_nombre,
+                                                          departamentos.nombre as Dep_nombre,
+                                                          municipios.id as Mun_id,
+                                                          departamentos.id as Dep_id 
                                                    FROM $tabla INNER JOIN municipios ON
                                                    departamentos.id = municipios.departamento_id 
                                                    WHERE $item = $valor");

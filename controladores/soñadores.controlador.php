@@ -37,6 +37,17 @@ class ControladorSoñadores
 
     }
 
+    public static function ctrMostrarSoñador($item, $valor)
+    {
+
+        $tabla = "personas";
+        
+        $respuesta = ModeloSoñadores::mdlMostrarSoñadores($tabla, $item, $valor);
+
+        return $respuesta;
+
+    }
+
 
     public static function ctrEstadoSoñadores($item1, $item2, $item3)
     {
@@ -49,7 +60,27 @@ class ControladorSoñadores
         return $respuesta;
 
             
-    }   
+    } 
+    
+    public static function ctrEditarSoñador($datos)
+    {
+        $datosSoñador = array(
+            "documento"     => $datos["documento"],
+            "nombres"       => $datos["nombres"],
+            "apellidos"     => $datos["apellidos"],
+            "f_nacimiento"  => $datos["f_nacimiento"],
+            "sexo"          => $datos["sexo"],
+            "direccion"     => $datos["direccion"],
+            "celular"       => $datos["celular"],
+            "email"         => $datos["email"],
+            "municipio_id"  => $datos["municipio_id"],
+            "fecha_modificacion" => $datos["fecha_modificacion"],
+        );
+
+        $respuesta = ModeloSoñadores::mdlEditarSoñador("personas", $datosSoñador);
+
+        return $respuesta;
+    }
     
 
 

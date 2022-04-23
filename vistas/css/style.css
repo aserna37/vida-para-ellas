@@ -76,15 +76,15 @@ figcaption > h5{
   color: rgb(212, 212, 212) !important;
 }
 
-.btnnuevoSoñador{
+/* .btnn{
   margin-top: -25px !important;
   transform: translate(-12px);
-  }
+  } */
 
-.btnnuevoSoñador > a{
-  background-color: rgb(117,82,255) !important;
+.btnnuevo > a{
+  background-color: #7452ff !important;
   color: white;
-  width: 200px;
+  /* width: 200px; */
   -webkit-box-shadow: 9px 10px 15px -9px #000000; 
   box-shadow: 9px 10px 15px -9px #000000;
 }
@@ -102,13 +102,13 @@ figcaption > h5{
   box-shadow: 0 1px 1px rgba(229, 103, 23, 0.075)inset, 0 0 8px rgb(117,82,255) !important;
 }
 
-.btnGuardar{
-  background-color: rgb(117,82,255) !important;
+.btnGuardar, .btnGuardarPedido, .btnGuardarCita{
+  background-color: #7552ff !important;
   color: white !important;
   width: 150px !important;
 }
 
-.btnGuardar:hover{
+.btnGuardar:hover, .btnGuardarPedido:hover{
   background-color: #8B80FF !important;
   transition: .3s ease-in !important ;
 }
@@ -120,13 +120,59 @@ figcaption > h5{
 }
 
 
+.textotitulo{
+color: rgb(117,82,255) !important ;
+text-shadow: 7px 3px 7px rgba(107,120,109,0.5);
+font-weight: bold;
+font-size: 18px;
+}
+
+
+.nombreSoñadora{
+  display: none !important;
+  margin-top: -20px;
+}
+
+.fondoarriba{
+  border-radius: 10px 0px 10px 200px !important;
+  -moz-border-radius: 10px 0px 10px 200px !important;
+  -webkit-border-radius: 10px 0px 10px 200px !important;
+  border: 0px solid #7552ff !important;
+  background: #7552ff !important;
+  width: 100% !important;
+  height: 60px !important;
+}
+
+.btnAgregar{
+  background-color: #7552ff !important;
+  color: white !important;
+  width: 150px !important;
+  margin-top: 30px !important;
+}
+
+.btnAgregar:hover{
+  background-color: #8B80FF !important;
+  transition: .3s ease-in !important ;
+}
+
+.tabla{
+  margin-left: 20px !important;
+  margin-right: 40px !important;
+ 
+}
+
+.nav-pills .nav-link.active,
+.show>.nav-pills .nav-link{
+    background: #004B6F  !important
+}
 
 
 
 
 
 
-@media(max-width: 380px) {
+
+@media only screen and (max-width: 768px) {
   
   lord-icon{
     width: 50px !important;
@@ -141,6 +187,13 @@ figcaption > h5{
   .btnnuevoSoñador > a{
     width: 100% !important;
   }
+
+  .nombreSoñadora{
+    display: block !important;
+    margin-top: -20px;
+  }
+
+  
 }
 
 

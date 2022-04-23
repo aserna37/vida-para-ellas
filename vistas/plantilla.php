@@ -7,7 +7,7 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Vida para Ellas - Login</title>
+    <title>Vida para Ellas</title>
 
     <!-- <link rel="apple-touch-icon" href="vistas/img/plantilla/icono.png">
     <link rel="shortcut icon" href="vistas/img/plantilla/icono.png"> -->
@@ -46,6 +46,9 @@ if (isset($_SESSION["validarSesionBackend"]) && $_SESSION["validarSesionBackend"
                 $_GET["ruta"] == "salir" ||
                 $_GET["ruta"] == "productos" ||
                 $_GET["ruta"] == "soñadores" ||
+                $_GET["ruta"] == "stocks" ||
+                $_GET["ruta"] == "usuarios" ||
+                $_GET["ruta"] == "salidas" ||
                 $_GET["ruta"] == "reportes") {
                 include "modulos/" . $_GET["ruta"] . ".php";
     

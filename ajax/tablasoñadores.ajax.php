@@ -39,7 +39,7 @@ class TablaSoñadores
                 }
                 
                 $estado = "<button class='btn btn-sm btnActivar " . $colorEstado . "' idSoñador='" . $soñadores[$i]["id"] . "' estadoSoñador='" . $estadoSoñador . "' documentoSoñador='" . $soñadores[$i]["documento"] . "'>" . $textoEstado . "</button>";
-                $acciones = "<div class='btn-group'><button class='btn btn-info btn-sm btnEditarSoñador' idSoñador='" . $soñadores[$i]["id"] . "' data-toggle='modal' data-target='#modalEditarSoñador'>Editar</button><button class='btn btn-warning btn-sm btnVerSoñador' idSoñador='" . $soñadores[$i]["id"] . "'>Ver</button></div>";
+                $acciones = "<div class='btn-group'><button class='btn btn-info btn-sm btnEditarSoñador' idSoñador='" . $soñadores[$i]["id"] . "' data-toggle='modal' data-target='#modalEditarSoñador'>Editar</button><button class='btn btn-warning btn-sm btnVerSoñador' verSoñador='" . $soñadores[$i]["id"] . "'>Ver</button></div>";
 
                 $sub_array = array();
                 $sub_array[] = $soñadores[$i]["documento"];

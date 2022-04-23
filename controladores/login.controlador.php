@@ -7,21 +7,29 @@ class ControladorLogin
     {
         if (isset($_POST["usuario"])) {
 
-            
-                
+                               
                 $encriptar = $_POST["password"]; 
                 $tabla = "usuarios";
                 $item  = "usuario";
                 $valor = $_POST["usuario"];
 
                 $respuesta = ModeloUsuario::mdlMostrarUsuario($tabla, $item, $valor);
+                
+                $item1 = 'documento';
+                $valor1 = $_POST["usuario"];
+                $persona = ControladorSoñadores::ctrMostrarSoñadores($item1,$valor1);
+                
+                foreach($persona as $key => $value){
+                    $persona_id = $value['id'];
+                    
+                  }
 
                 if(is_array($respuesta)){
                     if (password_verify($encriptar, $respuesta['password'])) {
                         if ($respuesta["estado"] == 1) {
 
                         $_SESSION["validarSesionBackend"] = "ok";
-                        $_SESSION["id"]                   = $respuesta["id"];
+                        $_SESSION["id"]                   = $persona_id;
                         $_SESSION["usuario"]              = $respuesta["usuario"];
                         $_SESSION["foto"]                 = $respuesta["foto"];
                         $_SESSION["rol"]                  = $respuesta["rol_id"];

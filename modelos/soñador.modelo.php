@@ -85,8 +85,6 @@ public static function mdlEstadoSoñador($tabla, $tabla1, $item1, $item2, $item3
     {
         
         
-        // $stmt = Conexion::conectar()->prepare("UPDATE $tabla SET estado = :item1 WHERE id = :item2");
-
         $stmt = Conexion::conectar()->prepare("UPDATE $tabla INNER JOIN $tabla1
                                                ON ($tabla.documento = $tabla1.usuario)
                                                SET $tabla.estado = :item1, $tabla1.estado = :item1
@@ -112,5 +110,42 @@ public static function mdlEstadoSoñador($tabla, $tabla1, $item1, $item2, $item3
     }
 
 
+    // Editar Soñador
+
+public static function mdlEditarSoñador($tabla, $datos)
+    
+{
+    $stmt = Conexion::conectar()->prepare("UPDATE $tabla SET documento=:documento, nombres=:nombres, apellidos=:apellidos, f_nacimiento=:f_nacimiento, sexo = :sexo, direccion=:direccion, celular=:celular, email=:email, municipio_id=:municipio_id, fecha_modificacion=:fecha_modificacion WHERE documento = :documento");
+
+    $stmt->bindParam(":documento", $datos["documento"], PDO::PARAM_STR);
+    $stmt->bindParam(":nombres", $datos["nombres"], PDO::PARAM_STR);
+    $stmt->bindParam(":apellidos", $datos["apellidos"], PDO::PARAM_STR);
+    $stmt->bindParam(":f_nacimiento", $datos["f_nacimiento"], PDO::PARAM_STR);
+    $stmt->bindParam(":sexo", $datos["sexo"], PDO::PARAM_STR);
+    $stmt->bindParam(":direccion", $datos["direccion"], PDO::PARAM_STR);
+    $stmt->bindParam(":celular", $datos["celular"], PDO::PARAM_STR);
+    $stmt->bindParam(":email", $datos["email"], PDO::PARAM_STR);
+    $stmt->bindParam(":municipio_id", $datos["municipio_id"], PDO::PARAM_STR);
+    $stmt->bindParam(":fecha_modificacion", $datos["fecha_modificacion"], PDO::PARAM_STR);
+
+    if ($stmt->execute()) {
+
+        return "ok";
+
+    } else {
+
+        return "error";
+
+    }
+
+    $stmt->close();
+    $stmt = null;
 
 }
+
+
+//**************** */ 
+
+
+
+    }

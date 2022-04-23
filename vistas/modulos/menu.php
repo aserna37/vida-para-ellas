@@ -1,3 +1,4 @@
+
 <div class="nombre_menu">
   <div class="container rounded">
     <h4>Menu Principal</h4>
@@ -23,7 +24,7 @@
             <figcaption class="ml-auto">
             <h5 class="ih-fade-up ih-delay-sm text-center">Stocks</h5>
             </figcaption>
-                <a href="productos"></a>
+                <a href="stocks"></a>
         </figure>
     </div>
 
