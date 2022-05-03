@@ -92,7 +92,7 @@ $('#ModalCrearSoñadora #agregarSoñador').submit(function(e){
           type: 'success',
           title: 'Soñador registrado exitosamente',                          
           });
-          tablaSoñadora.ajax.reload();  
+          window.location.reload();  
       }else{
         Swal.fire({
           type: 'error',
@@ -127,8 +127,9 @@ $('#tablaSoñadores tbody').on("click", ".btnActivar", function() {
             Swal.fire({
               type: 'success',
               title: 'Estado Actualizado',                          
-              });
-              tablaSoñadora.ajax.reload();  
+              }).then((result) => {
+                window.location.reload();
+              }); 
           }
       }
   })
@@ -234,7 +235,7 @@ $('#tablaSoñadores tbody').on("click", ".btnEditarSoñador", function() {
             type: 'success',
             title: 'Soñador actualizado exitosamente',                          
             });
-            tablaSoñadora.ajax.reload();  
+            window.location.reload();  
         }else{
           Swal.fire({
             type: 'error',
@@ -309,7 +310,7 @@ $('#tablaSoñadores tbody').on("click", ".btnEditarSoñador", function() {
             type: 'success',
             title: 'Producto registrado exitosamente',                          
             });
-            tablaProductos.ajax.reload();  
+            window.location.reload(); 
         }else{
           Swal.fire({
             type: 'error',
@@ -342,7 +343,7 @@ $('#tablaProductos tbody').on("click", ".btnActivar", function() {
               type: 'success',
               title: 'Estado Actualizado',                          
               });
-              tablaProductos.ajax.reload();  
+              window.location.reload(); 
           }
       }
   })
@@ -390,7 +391,7 @@ $('#tablaProductos tbody').on("click", ".btnEditarProducto", function() {
             type: 'success',
             title: 'Producto actualizado exitosamente',                          
             });
-            tablaProductos.ajax.reload();  
+            window.location.reload(); 
         }else{
           Swal.fire({
             type: 'error',
@@ -425,7 +426,7 @@ success: function(respuesta){
       type: 'success',
       title: 'Cantidad agregada exitosamente',                          
       });
-      tablaStocks.ajax.reload();  
+      window.location.reload();  
   }else{
     Swal.fire({
       type: 'error',
@@ -821,9 +822,298 @@ $('#ModalCrearCita #crearCita').submit(function(e){
 
 
 
+// ****************************************************** 
+// TABLAS DE BODEGA
+
+var tablaPedidosPendientes = $('#tablaPedidosPendientes').DataTable({
+  responsive: true,
+  autoWidth: false,    
+  "language": {
+        "url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json",
+        "sProcessing": "Procesando...",
+        "sLengthMenu": "Mostrar _MENU_ registros",
+        "sZeroRecords": "No se encontraron resultados",
+        "sEmptyTable": "Ningún dato disponible en esta tabla",
+        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_",
+        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0",
+        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+        "sInfoPostFix": "",
+        "sSearch": "Buscar:",
+        "sUrl": "",
+        "sInfoThousands": ",",
+        "sLoadingRecords": "Sin Registros",
+        "oPaginate": {
+            "sFirst": "Primero",
+            "sLast": "Último",
+            "sNext": "Siguiente",
+            "sPrevious": "Anterior"
+          },
+          "oAria": {
+            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+          }
+        },
+       "ajax" : {
+        url:"ajax/tablabodega.ajax.php",
+        type:"POST",
+        "deferRender": true,
+        "retrieve": true,
+        "processing": true,
+        }
+  });
+
+  // DETALLE MODAL DEL PENDIENTE
+
+  $('#tablaPedidosPendientes tbody').on("click", ".btnPendientePedido", function(e) {
+    e.preventDefault();
+
+    var idPedido = $(this).attr("idPedido");
+    var datos = new FormData();
+    datos.append("idPedido", idPedido);
+    document.getElementById('pedido').value = idPedido;
+    
+    $.ajax({
+      url: "ajax/pedidos.ajax.php",
+      method: "POST",
+      data: datos,
+      cache: false,
+      contentType: false,
+      processData: false,
+      success: function(respuesta) {
+        $("#pendientePedido").empty();
+        $('#pendientePedido').append(respuesta);
+        $('#modalVerPedido').modal('show');
+      }
+  })
+
+    
+    
+  });
+// rotulo de embalaje
+  $('#modalVerPedido #pendientePedido').on("click", ".btnRotulo", function(e) {
+    e.preventDefault();
+
+    var idRotulo = $(this).attr("rotulo");
+    var datos = new FormData();
+    datos.append("idRotulo", idRotulo);
+    
+    $.ajax({
+      url: "ajax/soñadores.ajax.php",
+      method: "POST",
+      data: datos,
+      cache: false,
+      contentType: false,
+      processData: false,
+      success: function(respuesta) {
+        var datos = JSON.parse(respuesta);
+        // console.log(datos);
+        var imgData = 'vistas/img/plantillas/logo.jpg';
+        var { jsPDF } = window.jspdf;
+        var doc = new jsPDF({
+          format: "a5"
+        });
+        doc.setDrawColor(0, 75, 111);
+        doc.rect(5, 5, 138, 90);
+        doc.addImage(imgData, "jpg", 114, 7, 25, 25);
+        doc.setFontSize(12)
+        doc.text(10,30, 'Nombres:');
+        doc.setFontSize(18)
+        doc.text(10,37, `${datos['nombres'] + " " +datos['apellidos']}`);
+        doc.setFontSize(12)
+        doc.text(10,47, 'Dirección:');
+        doc.setFontSize(18)
+        doc.text(10,54, `${datos['direccion']}`);
+        doc.setFontSize(12)
+        doc.text(10,64, 'Celular:');
+        doc.setFontSize(18)
+        doc.text(10,71, `${datos['celular']}`);
+        doc.setFontSize(12)
+        doc.text(10,81, 'Ciudad - Departamento:');
+        doc.setFontSize(18)
+        doc.text(10,88, `${datos['municipio'] + " - " +datos['departamento']}`);
+        doc.save("rotulo.pdf");
+      }
+  });
+
+});
+
+
+$('#modalVerPedido .modal-footer').on("click", "#btnBodega", function(e) {
+  e.preventDefault();
+  var datoPedido = document.getElementById('pedido').value;
+  var datos = new FormData();
+  datos.append("datoPedido", datoPedido);
+
+  $.ajax({
+    url: "ajax/pedidos.ajax.php",
+    method: "POST",
+    data: datos,
+    cache: false,
+    contentType: false,
+    processData: false,
+    success: function(respuesta) {
+      if(respuesta =='ok'){
+      return Swal.fire({
+        type: 'success',
+        confirmButtonText: 'Ok',
+        title: 'Pedido Aprobado',                          
+      }).then((result) => {
+        window.location.reload();
+      });
+
+    } 
+  }
+  
+});
+});
+
 // ******************************************************
+
+
+
+// ******************************************************
+
+// TABLA USUARIOS
+
+var tablaSoñadora = $('#tablaUsuarios').DataTable({
+  responsive: true,
+  autoWidth: false,    
+  "language": {
+        "url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json",
+        "sProcessing": "Procesando...",
+        "sLengthMenu": "Mostrar _MENU_ registros",
+        "sZeroRecords": "No se encontraron resultados",
+        "sEmptyTable": "Ningún dato disponible en esta tabla",
+        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_",
+        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0",
+        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+        "sInfoPostFix": "",
+        "sSearch": "Buscar:",
+        "sUrl": "",
+        "sInfoThousands": ",",
+        "sLoadingRecords": "Sin Registros",
+        "oPaginate": {
+            "sFirst": "Primero",
+            "sLast": "Último",
+            "sNext": "Siguiente",
+            "sPrevious": "Anterior"
+          },
+          "oAria": {
+            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+          }
+        },
+       "ajax" : {
+        url:"ajax/tablausuarios.ajax.php",
+        type:"POST",
+        "deferRender": true,
+        "retrieve": true,
+        "processing": true,
+        }
+  });
+
+
+
+  //************************************************************ */ 
+
+// CAMBIAR ESTADO USUARIO Y PERSONA
+
+$('#tablaUsuarios tbody').on("click", ".btnActivar", function() {
+  var idSoñador = $(this).attr("idSoñador");
+  var estadoSoñador = $(this).attr("estadoSoñador");
+  var documentoSoñador = $(this).attr("documentoSoñador");
+  var datos = new FormData();
+  datos.append("activarId", idSoñador);
+  datos.append("activarSoñador", estadoSoñador);
+  datos.append("documentoSoñador", documentoSoñador);
+  
+  $.ajax({
+    url: "ajax/soñadores.ajax.php",
+    method: "POST",
+    data: datos,
+    cache: false,
+    contentType: false,
+    processData: false,
+    success: function(respuesta) {
+      if(respuesta == 'ok'){
+          Swal.fire({
+            type: 'success',
+            title: 'Estado Actualizado',                          
+            }).then((result) => {
+              window.location.reload();
+            });
+          }
+        }
+      });
+      
+}); 
+
+// ************************************************
+
+// AGREGAR Usuario
+$('#ModalCrearUsuario #agregarUsuario').submit(function(e){
+  e.preventDefault();
+   var addform = $(this).serialize();
+  $.ajax({
+    type: 'POST',
+    url: 'ajax/soñadores.ajax.php',
+    data: addform,
+    success: function(respuesta){
+    // alert(respuesta);
+      if(respuesta == 'ok'){
+        $('#ModalCrearUsuario').modal('hide');
+        Swal.fire({
+          type: 'success',
+          title: 'Usuario registrado exitosamente',                          
+          });
+          window.location.reload();
+      }else{
+        Swal.fire({
+          type: 'error',
+          title: 'Usuario ya se encuentra registrado',                          
+          });
+      }
+    }
+  });
+});
+//************************************************************ */ 
+// VER USUARIO
+$('#tablaUsuarios tbody').on("click", ".btnVerSoñador", function() {
+  var verSoñador = $(this).attr("verSoñador");
+  var datos = new FormData();
+  datos.append("verSoñador",verSoñador);
+  $.ajax({
+    url: "ajax/soñadores.ajax.php",
+    method: "POST",
+    data: datos,
+    cache: false,
+    contentType: false,
+    processData: false,
+    // dataType: "json",
+    success: function(respuesta) {
+      var datos = JSON.parse(respuesta);
+      console.log(datos);
+      $("#modalVerUsuario #veremail").text(datos['email']);
+      $("#modalVerUsuario #vertipo").text(datos['tipo']);
+      $("#modalVerUsuario #verdocumento").text(datos['documento']);
+      $("#modalVerUsuario #vernombres").text(datos['nombres']);
+      $("#modalVerUsuario #verapellidos").text(datos['apellidos']);
+      $("#modalVerUsuario #verdireccion").text(datos['direccion']);
+      $("#modalVerUsuario #vercelular").text(datos['celular']);
+      $("#modalVerUsuario #verdepartamento").text(datos['departamento']);
+      $("#modalVerUsuario #vermunicipio").text(datos['municipio']);
+    }
+    });
+    
+    $('#modalVerUsuario').modal('show');
+  });
+  
+  // ************************************************
+
 
 
 
 
   });
+
+  

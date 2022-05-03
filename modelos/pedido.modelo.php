@@ -218,6 +218,98 @@ class ModeloPedidos
         
     }
 
+    public static function mdlMostrarPedidosPendientes($tabla, $item, $valor)
+    
+    {
+
+        $stmt = Conexion::conectar()->prepare("SELECT pedidos.id as pedido,
+                                                      pedidos.fecha as fecha,
+                                                      personas.nombres as nombres,
+                                                      personas.apellidos as apellidos
+                                                      FROM personas INNER JOIN pedidos ON
+                                                      personas.id = pedidos.persona_id 
+                                                      WHERE pedidos.estado = $valor");
+
+
+        // $stmt->bindValue(":item", $valor, PDO::PARAM_STR);
+                
+        
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+        
+        
+    }
+
+
+    public static function mdlbuscarPedido($tabla, $item, $valor)
+    
+    {
+
+        $stmt = Conexion::conectar()->prepare("SELECT pedidos.id as pedido,
+                                                      pedidos.fecha as fecha,
+                                                      pedidos.comprobante as comprobante,
+                                                      pedidos.total as total,
+                                                      pedidos.persona_id as persona,
+                                                      personas.nombres as nombres,
+                                                      personas.apellidos as apellidos
+                                                      FROM personas INNER JOIN pedidos ON
+                                                      personas.id = pedidos.persona_id 
+                                                      WHERE pedidos.id = $valor");
+
+
+        // $stmt->bindValue(":item", $valor, PDO::PARAM_STR);
+                
+        
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+        
+        
+    }
+
+    public static function mdlactualizarEstadoPedido($tabla, $tabla1, $estado, $item, $item1, $valor)
+    
+    {
+
+        $stmt = Conexion::conectar()->prepare("UPDATE $tabla SET 
+                                                estado = $estado
+                                                WHERE $item = :item");
+
+        $stmt->bindValue(":item", $valor, PDO::PARAM_STR);
+                
+        
+        if ($stmt->execute()) {
+
+            $stmt = Conexion::conectar()->prepare("UPDATE $tabla1 SET 
+                                                estado = $estado
+                                                WHERE $item1 = :item");
+
+            $stmt->bindValue(":item", $valor, PDO::PARAM_STR);
+            
+            if($stmt->execute()){
+            
+                return "ok"; 
+            
+            } else{
+            
+                return 'error';
+            }
+
+        } else {
+
+            return "error";
+
+        }
+        
+        $stmt->close();
+        $stmt = null;
+        
+        
+    }
+
+
+
 
 
 

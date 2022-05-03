@@ -64,7 +64,7 @@
             <figcaption class="ml-auto">
             <h5 class="ih-fade-up ih-delay-sm text-center">Parametrización</h5>
             </figcaption>
-                <a href="productos"></a>
+                <a type='button' data-toggle="modal" data-target="#ModalParametro"></a>
         </figure>
     </div>
 
@@ -74,4 +74,37 @@
 
 
 </div>
+
+
+
+<!-- MODAL PARAMETRICACION -->
+<!-- ********************************************* -->
+
+<div class="modal fade" id="ModalParametro" data-backdrop="static" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Parametrización</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+            <div class="col">
+                <a href="usuarios" class="btn btn-block btnPara"><i class="fa-solid fa-users fa-3x"></i><br>Usuarios</a>
+            </div>
+            <div class="col">
+            <a href="salidas" class="btn btn-block btnPara"><i class="fa-solid fa-pen-to-square fa-3x"></i><br>Salidas Manuales</a>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ********************************************* -->
 

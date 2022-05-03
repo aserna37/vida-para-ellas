@@ -119,6 +119,42 @@ class ControladorPedidos
 
     }
 
+    public static function ctrMostrarPedidosPendientes($item, $valor){
+
+        $tabla = 'pedidos';
+
+        $respuesta = ModeloPedidos::mdlMostrarPedidosPendientes($tabla, $item, $valor);
+
+        return $respuesta;
+
+
+    }
+
+    public static function ctrbuscarPedido($item, $valor){
+
+        $tabla = 'pedidos';
+
+        $respuesta = ModeloPedidos::mdlbuscarPedido($tabla, $item, $valor);
+
+        return $respuesta;
+
+
+    }
+
+    public static function ctractualizarEstadoPedido($estado, $item, $item1, $valor){
+
+        $tabla = 'pedidos';
+        $tabla1 = 'pedidos_detalle';
+
+        $respuesta = ModeloPedidos::mdlactualizarEstadoPedido($tabla, $tabla1, $estado, $item, $item1, $valor);
+
+        return $respuesta;
+
+
+    }
+
+
+
 
 
 

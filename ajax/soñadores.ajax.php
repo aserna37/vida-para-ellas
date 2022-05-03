@@ -94,10 +94,10 @@ public function ajaxEstadoSoñador()
                 "email"             => $respuesta[$i]["email"],    
                 "tipo"              => $respuesta[$i]["tipo"],
                 "documento"         => $respuesta[$i]["documento"],
-                "nombres"           => $respuesta[$i]["nombres"],
+                "nombres"           => ucwords($respuesta[$i]["nombres"]),
                 "f_nacimiento"      => $respuesta[$i]["f_nacimiento"],
                 "sexo"              => $respuesta[$i]["sexo"],
-                "apellidos"         => $respuesta[$i]["apellidos"],
+                "apellidos"         => ucwords($respuesta[$i]["apellidos"]),
                 "direccion"         => $respuesta[$i]["direccion"],
                 "celular"           => $respuesta[$i]["celular"],
                 "municipio"         => $mostrarMunicipios["Mun_nombre"],
@@ -139,8 +139,6 @@ public function ajaxEstadoSoñador()
 
         }
 
-
-   
 }
 
 // CREAR PERSONAS*************************************************
@@ -236,6 +234,12 @@ if (isset($_POST["opcion"])) {
     
 }
 
+// BUSCAR PARA ROTULO
 
+if(isset($_POST["idRotulo"])){
+    $buscarRotulo = new AjaxSoñadores();
+    $buscarRotulo->verSoñador     = $_POST["idRotulo"];
+    $buscarRotulo->ajaxVerSoñador();
+    } 
 
 ?>

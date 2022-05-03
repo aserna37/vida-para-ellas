@@ -166,6 +166,19 @@ font-size: 18px;
     background: #004B6F  !important
 }
 
+.contenedor_rotulo{
+  border: 7px solid #7552ff !important;
+}
+
+.btnPara{
+  background-color: #7552ff !important;
+  color: white !important;
+}
+
+.btnPara i {
+  color: white !important;
+}
+
 
 
 

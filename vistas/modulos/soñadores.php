@@ -372,7 +372,7 @@
                         <label for="documento" class="col-form-label col-form-label-sm">Correo electronico</label>
                         <input type="email" class="form-control form-control-sm editaremail" 
                         name="eemail" 
-                        id="email">
+                        id="email" required>
                     </div>
                     
                     <input type="text" name="opcion" value="2" hidden>

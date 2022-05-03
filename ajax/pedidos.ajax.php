@@ -7,6 +7,7 @@ require_once "../modelos/pedido.modelo.php";
 
 
 
+
 class TablaPedidos
 {
 
@@ -98,19 +99,74 @@ class TablaPedidos
         );
 
                         
-        $respuesta = ControladorPedidos::ctrCrearCita($datos);
+        $respuesta = ControladorPedidos::ctrBorrarPedidoDetalle($item, $valor);
 
         echo ($respuesta);
 
+}
+
+    public function buscarPedido(){
+
+
+        $item = 'id';
+        $valor = $this->idPedido;
+
+        $respuesta = ControladorPedidos::ctrbuscarPedido($item, $valor);
+
+        for ($i = 0; $i < count($respuesta); $i++){
+
+            $pedido = 'P2022-'.$respuesta[$i]["pedido"];
+            $nombres = ucwords($respuesta[$i]['nombres'])." ".ucwords($respuesta[$i]['apellidos']);
+            $total = '$'.number_format($respuesta[$i]['total']);
+            $comprobante = $respuesta[$i]['comprobante'];
+
+            echo '<div class="row">
+            <div class="col-3">
+            <h4>Pedido:</h4>
+            <h4>Soñador:</h4>
+            <h4>Fecha:</h4>
+            <h4>Valor:</h4>
+
+            </div>
+            <div class="col-9">
+            <h4><span class="badge badge-pill badge-info">'.$pedido.'</span></h4>
+            <h4><span class="badge badge-pill badge-info">'.$nombres.'</span></h4>
+            <h4><span class="badge badge-pill badge-info">'.$respuesta[$i]['fecha'].'</span></h4>
+            <h4><span class="badge badge-pill badge-danger">'.$total.'</span></h4>
+
+            </div>
+
+          </div>
+
+        <div class="row">
+                <div class="col-6">
+                    <a class="btn btn-block btn-primary" href="vistas/img/comprobantes/'.$comprobante.'" target="_blank">Ver Comprobante</a>
+                </div>
+                <div class="col-6">
+                    <button class="btn btn-block btn-primary btnRotulo" rotulo="'.$respuesta[$i]['persona'].'">Generar Rotulo de envio</button>
+                </div>';
+        }
         
         
-       
+
+    }  
+    
+    public function actualizarEstadoPedido(){
+
+        $estado = $this->estado; 
+        $item = 'id';
+        $item1 = 'pedido_id';
+        $valor = $this->idPedido;
+
+        $respuesta = ControladorPedidos::ctractualizarEstadoPedido($estado, $item, $item1, $valor);
+
+        echo $respuesta;
+
+    }
 
 
 }
 
-        
-}
 
 
 
@@ -145,7 +201,8 @@ if(isset($_POST["idSoñadora"])){
     $ale = rand();
     $aleatorio = $ale."."; 
     $ruta = "../vistas/img/comprobantes/";
-    $rutaFinal = $ruta.$aleatorio.$ext;
+    $rutaFinal  = $ruta.$aleatorio.$ext;
+    $rutaGrabar = $aleatorio.$ext;
 
     copy($ubicacionTemporal , $rutaFinal);
         
@@ -154,7 +211,7 @@ if(isset($_POST["idSoñadora"])){
         $crearPedido = new TablaPedidos();
         $crearPedido->idSoñadora      = $_POST["idSoñadora"];
         $crearPedido->datoInterno     = $_POST["datoInterno"];
-        $crearPedido->comprobante     = $rutaFinal;
+        $crearPedido->comprobante     = $rutaGrabar;
         $fecha = date("d/m/Y");
         $crearPedido->fecha           = $fecha;
         $crearPedido->crearPedido();
@@ -172,6 +229,25 @@ if(isset($_POST["pote"])){
     $crearCita->soñadora   = $_POST["soñadora"];
     $crearCita->crearCita();
     }
+
+
+    if(isset($_POST["idPedido"])){
+        $buscarPedido = new TablaPedidos();
+        $buscarPedido->idPedido     = $_POST["idPedido"];
+        $buscarPedido->buscarPedido();
+        }
+
+    
+    if(isset($_POST["datoPedido"])){
+        $actualizarPedido = new TablaPedidos();
+        $actualizarPedido->idPedido         = $_POST["datoPedido"];
+        $actualizarPedido->estado = 2;
+        $actualizarPedido->actualizarEstadoPedido();
+        }    
+
+       
+
+            
 
 
     
