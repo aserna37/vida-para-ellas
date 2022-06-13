@@ -1,6 +1,7 @@
 <?php
-
 require_once "conexion.php";
+
+
 
 class ModeloSoñadores
 {
@@ -72,8 +73,8 @@ public static function mdlMostrarSoñadores($tabla, $item, $valor)
 public static function mdlIngresarSoñador($tabla, $datos)
     
     {
-        $stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(tipo, documento, nombres, apellidos, f_nacimiento, sexo, direccion, celular, email, municipio_id, estado, rol_id) VALUES 
-        (:tipo, :documento, :nombres, :apellidos, :f_nacimiento, :sexo, :direccion, :celular, :email, :municipio_id, :estado, :rol_id)");
+        $stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(tipo, documento, nombres, apellidos, f_nacimiento, sexo, direccion, celular, email, municipio_id, estado, lider, rol_id) VALUES 
+        (:tipo, :documento, :nombres, :apellidos, :f_nacimiento, :sexo, :direccion, :celular, :email, :municipio_id, :estado, :lider, :rol_id)");
 
         $stmt->bindParam(":tipo", $datos["tipo"], PDO::PARAM_STR);
         $stmt->bindParam(":documento", $datos["documento"], PDO::PARAM_STR);
@@ -87,6 +88,7 @@ public static function mdlIngresarSoñador($tabla, $datos)
         $stmt->bindParam(":municipio_id", $datos["municipio_id"], PDO::PARAM_STR);
         $stmt->bindParam(":estado", $datos["estado"], PDO::PARAM_STR);
         $stmt->bindParam(":rol_id", $datos["rol_id"], PDO::PARAM_STR);
+        $stmt->bindParam(":lider", $datos["lider"], PDO::PARAM_STR);
 
         if ($stmt->execute()) {
 
@@ -168,6 +170,22 @@ public static function mdlEditarSoñador($tabla, $datos)
     $stmt = null;
 
 }
+
+public static function mdlMostrarLideres($tabla)
+    
+{
+    $stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE lider = 1");
+
+    $stmt->execute();
+
+    return $stmt->fetchAll();
+
+    $stmt->close();
+    $stmt = null;
+
+}
+
+
 
 
 //**************** */ 

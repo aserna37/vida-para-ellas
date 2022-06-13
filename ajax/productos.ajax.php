@@ -109,7 +109,7 @@ if (isset($_POST["opcion"])) {
             date_default_timezone_set("America/Bogota");
 
             $producto                 = new AjaxProductos();
-            $producto->nombre          = $_POST["nombre"];
+            $producto->nombre          = strtolower($_POST["nombre"]);
             $producto->valor_unidad    = $_POST["valor_unidad"];
             $producto->estado          = $_POST["estado"];
             $producto->ajaxCrearProducto();
@@ -154,7 +154,7 @@ if (isset($_POST["eopcion"])) {
         
         $producto                   = new AjaxProductos();
         $producto->id               = $_POST["eid"];
-        $producto->nombre           = $_POST["enombre"];
+        $producto->nombre           = strtolower($_POST["enombre"]);
         $producto->valor_unidad     = $_POST["evalor_unidad"];
         $fecha = date("d/m/Y H:i:s");
         $producto->fecha_modificacion = $fecha;

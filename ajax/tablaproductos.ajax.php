@@ -37,7 +37,7 @@ class TablaProductos
 
 
                 $sub_array = array();
-                $sub_array[] = $productos[$i]["nombre"];
+                $sub_array[] = ucfirst($productos[$i]["nombre"]);
                 $sub_array[] = number_format($productos[$i]["valor_unidad"]);
                 $sub_array[] = $estado;
                 $sub_array[] = $acciones;

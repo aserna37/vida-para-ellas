@@ -58,10 +58,13 @@ class ModeloPedidos
     $stmt = Conexion::conectar()->prepare("SELECT productos.nombre as Ped_nombre,
                                                   pedidos_detalle.id as Ped_id, 
                                                   pedidos_detalle.cantidad as Ped_cantidad,
-                                                  productos.valor_unidad as Ped_valor_uni
-                                                   FROM productos INNER JOIN pedidos_detalle ON
-                                                   productos.id = pedidos_detalle.producto_id
-                                                   WHERE pedidos_detalle.n_interno = $valor");
+                                                  productos.valor_unidad as Ped_valor_uni,
+                                                  (productos_cantidad_total.total - salida_cantidad_total.total) as Diferencia
+                                                   FROM productos 
+                                                   INNER JOIN pedidos_detalle ON productos.id = pedidos_detalle.producto_id
+                                                   INNER JOIN productos_cantidad_total ON productos.id = productos_cantidad_total.producto_id
+                                                   INNER JOIN salida_cantidad_total ON productos.id = salida_cantidad_total.producto_id
+                                                   WHERE $item = $valor");
         
         // $stmt->bindValue(":item", $item, PDO::PARAM_INT);
         
@@ -173,19 +176,17 @@ class ModeloPedidos
         
     }
 
-    public static function mdlCrearCita($tabla, $datos)
+    public static function mdlCrearCliente($tabla, $datos)
     
-    { $stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(fecha, hora, nombres, celular, pote, acta, servicio, persona_id) VALUES 
-        (:fecha, :hora, :nombres, :celular, :pote, :acta, :servicio, :persona_id)");
+    { $stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(nombres, apellidos, celular, email, pote, personaId) VALUES 
+        (:nombres, :apellidos, :celular, :email, :pote, :personaId)");
 
-        $stmt->bindParam(":fecha", $datos["fecha"], PDO::PARAM_STR);
-        $stmt->bindParam(":hora", $datos["hora"], PDO::PARAM_STR);
         $stmt->bindParam(":nombres", $datos["nombres"], PDO::PARAM_STR);
+        $stmt->bindParam(":apellidos", $datos["apellidos"], PDO::PARAM_STR);
         $stmt->bindParam(":celular", $datos["celular"], PDO::PARAM_STR);
+        $stmt->bindParam(":email", $datos["email"], PDO::PARAM_STR);
         $stmt->bindParam(":pote", $datos["pote"], PDO::PARAM_STR);
-        $stmt->bindParam(":acta", $datos["acta"], PDO::PARAM_STR);
-        $stmt->bindParam(":servicio", $datos["servicio"], PDO::PARAM_STR);
-        $stmt->bindParam(":persona_id", $datos["soñadora_id"], PDO::PARAM_STR);
+        $stmt->bindParam(":personaId", $datos["soñadora_id"], PDO::PARAM_STR);
     
         if ($stmt->execute()) {
 
@@ -202,22 +203,7 @@ class ModeloPedidos
 
     }
 
-    public static function mdlMostrarCitasSoñador($tabla, $item, $valor)
     
-    {
-
-        $stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item=:item");
-
-        $stmt->bindValue(":item", $valor, PDO::PARAM_STR);
-                
-        
-        $stmt->execute();
-
-        return $stmt->fetchAll();
-        
-        
-    }
-
     public static function mdlMostrarPedidosPendientes($tabla, $item, $valor)
     
     {
@@ -247,6 +233,8 @@ class ModeloPedidos
     {
 
         $stmt = Conexion::conectar()->prepare("SELECT pedidos.id as pedido,
+                                                      pedidos.guia as guia,
+                                                      pedidos.empresa as empresa,
                                                       pedidos.fecha as fecha,
                                                       pedidos.comprobante as comprobante,
                                                       pedidos.total as total,
@@ -307,6 +295,97 @@ class ModeloPedidos
         
         
     }
+
+
+    public static function mdlactualizarEnvioPedido($tabla, $guia, $empresa, $item, $valor)
+    
+    {
+
+        $stmt = Conexion::conectar()->prepare("UPDATE $tabla SET 
+                                                guia = :guia, empresa = :empresa
+                                                WHERE $item = :item");
+
+        $stmt->bindValue(":guia", $guia, PDO::PARAM_STR);
+        $stmt->bindValue(":empresa", $empresa, PDO::PARAM_STR);
+        $stmt->bindValue(":item", $valor, PDO::PARAM_STR);
+                
+        
+        if ($stmt->execute()) {
+
+            return "ok"; 
+            
+            } else{
+            
+                return 'error';
+            }
+
+        $stmt->close();
+        $stmt = null;
+        
+        
+    }
+
+    public static function mdlactualizarFotoPedido($tabla, $foto, $item, $valor){
+
+        $stmt = Conexion::conectar()->prepare("UPDATE $tabla SET 
+                                                fotop = :foto
+                                                WHERE $item = :item");
+
+        $stmt->bindValue(":foto", $foto, PDO::PARAM_STR);
+        $stmt->bindValue(":item", $valor, PDO::PARAM_STR);
+                
+        
+        if ($stmt->execute()) {
+
+            return "ok"; 
+            
+            } else{
+            
+                return 'error';
+            }
+
+        $stmt->close();
+        $stmt = null;
+
+    }
+
+    public static function mdlbuscarPedidoDetalle($tabla, $item, $valor)
+    
+    {
+
+        $stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item = $valor");
+
+        // $stmt->bindValue(":item", $valor, PDO::PARAM_STR);
+                
+        
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+        
+        
+    }
+
+    public static function mdlmostrarPedidos()
+    
+    {
+
+        
+        $stmt = Conexion::conectar()->prepare("SELECT pedidos.id as Ped_id,
+                                                  pedidos.fecha as Ped_fecha,
+                                                  personas.nombres as Ped_nombres,
+                                                  personas.apellidos as Ped_apellidos,
+                                                  pedidos.total as Ped_valor,
+                                                  pedidos.estado as Ped_estado
+                                                  FROM personas 
+                                                  INNER JOIN pedidos ON personas.id = pedidos.persona_id");
+        
+
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+           
+    }
+
 
 
 

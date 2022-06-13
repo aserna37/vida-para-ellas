@@ -5,6 +5,7 @@ session_start();
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Vida para Ellas</title>
@@ -24,6 +25,7 @@ session_start();
         echo '<link rel="stylesheet" href="vistas/css/login.css">';
         echo '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css">';
         echo '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />';
+    
     }
     ?>
     
@@ -36,6 +38,7 @@ session_start();
 <?php
 
 if (isset($_SESSION["validarSesionBackend"]) && $_SESSION["validarSesionBackend"] === "ok") {
+    
     include "modulos/cabezote.php";
 
     if($_SESSION["rol"] == 1){
@@ -43,11 +46,11 @@ if (isset($_SESSION["validarSesionBackend"]) && $_SESSION["validarSesionBackend"
         if (isset($_GET["ruta"])) {
     
             if ($_GET["ruta"] == "menu" ||
-                $_GET["ruta"] == "perfil" ||
                 $_GET["ruta"] == "salir" ||
                 $_GET["ruta"] == "productos" ||
                 $_GET["ruta"] == "soñadores" ||
                 $_GET["ruta"] == "stocks" ||
+                $_GET["ruta"] == "pedidos" ||
                 $_GET["ruta"] == "usuarios" ||
                 $_GET["ruta"] == "salidas" ||
                 $_GET["ruta"] == "reportes") {
@@ -61,7 +64,6 @@ if (isset($_SESSION["validarSesionBackend"]) && $_SESSION["validarSesionBackend"
         if (isset($_GET["ruta"])) {
     
             if ($_GET["ruta"] == "embalaje" ||
-                $_GET["ruta"] == "perfil" ||
                 $_GET["ruta"] == "salir") {
                 include "modulos/" . $_GET["ruta"] . ".php";
     
@@ -73,7 +75,6 @@ if (isset($_SESSION["validarSesionBackend"]) && $_SESSION["validarSesionBackend"
         if (isset($_GET["ruta"])) {
     
             if ($_GET["ruta"] == "bodega" ||
-                $_GET["ruta"] == "perfil" ||
                 $_GET["ruta"] == "salir") {
                 include "modulos/" . $_GET["ruta"] . ".php";
                 
@@ -86,7 +87,6 @@ if (isset($_SESSION["validarSesionBackend"]) && $_SESSION["validarSesionBackend"
         if (isset($_GET["ruta"])) {
     
             if ($_GET["ruta"] == "soñador" ||
-                $_GET["ruta"] == "perfil" ||
                 $_GET["ruta"] == "salir") {
                 include "modulos/" . $_GET["ruta"] . ".php";
     
@@ -94,16 +94,20 @@ if (isset($_SESSION["validarSesionBackend"]) && $_SESSION["validarSesionBackend"
     
         }
     }
-    
 
+    if ($_GET["ruta"] == "perfil") {
+                include "modulos/" . $_GET["ruta"] . ".php";
+    
+            }
+    
     include "modulos/footer.php";
 
     
 
 } else {
 
-    include "modulos/login.php";
-
+       include "modulos/login.php";
+    
 }
 
 ?>

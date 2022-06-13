@@ -164,11 +164,36 @@
                     <div class="form-group col-sm-6" id="listaMunicipios"></div>
 
                     
-                    <div class="form-group col-sm-12">
+                    <div class="form-group col-sm-6">
                         <label for="documento" class="col-form-label col-form-label-sm">Correo electronico</label>
                         <input type="email" class="form-control form-control-sm " 
                         name="email" 
                         id="email">
+                    </div>
+
+                    <div class="form-group col-sm-6">
+                    <label for="documento" class="col-form-label col-form-label-sm">Soñador lider</label>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="checkLider" id="checkLider1" value="1">
+                        <label class="form-check-label" for="inlineRadio1">Si</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="checkLider" id="checkLider0" value="0">
+                        <label class="form-check-label" for="inlineRadio2">No</label>
+                        </div>
+                        <div id="esLider" style="display: none">
+                        <select class="form-control form-control-sm rounded" name="liderdocumento" id="liderdocumento" required>
+                            <option selected value="0">N/A</option>
+                            <?php
+                                
+                                $lideres = ControladorSoñadores::ctrMostrarLideres();
+
+                                foreach($lideres as $key => $value){
+                                    echo '<option value="' . $value["documento"] . '">' .ucwords($value["nombres"]). ' '.ucwords($value["apellidos"]).'</option>';
+                                }
+                            ?>
+                        </select>
+                        </div>    
                     </div>
                     
                     <input type="text" name="estado" value="1" hidden>
@@ -200,57 +225,47 @@
         </button>
       </div>
       <div class="modal-body">
-          
-        <div class="row">
-            <div class="col-12">
-                <img class="img-fluid " width="50px" src="vistas/img/perfiles/soñador.jpg" alt="">
-                <p class="font-italic text-muted" id="veremail"></p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-4 float-left">
-
-            <h6><span class="badge badge-secondary">Tipo Documento</span></h6>
-            <hr>
-            <h6><span class="badge badge-secondary">Documento</span></h6>
-            <hr>
-            <h6><span class="badge badge-secondary">Nombres</span></h6>
-            <hr>
-            <h6><span class="badge badge-secondary">Apellidos</span></h6>
-            <hr>
-            <h6><span class="badge badge-secondary">Dirección</span></h6>
-            <hr>
-            <h6><span class="badge badge-secondary">Celular</span></h6>
-            <hr>
-            <h6><span class="badge badge-secondary">Departamento</span></h6>
-            <hr>
-            <h6><span class="badge badge-secondary">Ciudad</span></h6>
-
-
-            </div>
-            <div class="col-8 float-right">
-
-            <h6 class="textotitulo" id="vertipo"></h6>
-            <hr>
-            <h6 class="textotitulo" id="verdocumento"></h6>
-            <hr>
-            <h6 class="textotitulo" id="vernombres"></h6>
-            <hr>
-            <h6 class="textotitulo" id="verapellidos"></h6>
-            <hr>
-            <h6 class="textotitulo" id="verdireccion"></h6>
-            <hr>
-            <h6 class="textotitulo" id="vercelular"></h6>
-            <hr>
-            <h6 class="textotitulo" id="verdepartamento"></h6>
-            <hr>
-            <h6 class="textotitulo" id="vermunicipio"></h6>
-
-            </div>
-        </div>
-        
-        
-                             
+          <div class="row">
+              <div class="col-md-5 fondoVer"></div>
+              <div class="col-md-7 bg-light border border-5 rounded-start">
+                  <div class="row">
+                      <div class="col-md-4">
+                      <small>Tipo</small>
+                      <p class="textotitulo" id="vertipo"></p>
+                      </div>
+                      <div class="col-md-8">
+                      <small>Documento</small>
+                      <p class="textotitulo" id="verdocumento"></p>
+                      </div>
+                      <div class="col-md-12">
+                      <small>Nombres</small>
+                      <p class="textotitulo" id="vernombres"></p>
+                      </div>
+                      <div class="col-md-12">
+                      <small>Apellidos</small>
+                      <p class="textotitulo" id="verapellidos"></p>
+                      </div>
+                      <div class="col-md-12">
+                      <small>Dirección</small>
+                      <p class="textotitulo" id="verdireccion"></p>
+                      </div>
+                      <div class="col-md-12">
+                      <small>Celular</small>
+                      <p class="textotitulo" id="vercelular"></p>
+                      </div>
+                      <div class="col-md-12">
+                      <small>Departamento</small>
+                      <p class="textotitulo" id="verdepartamento"></p>
+                      </div>
+                      <div class="col-md-12">
+                      <small>Municipio</small>
+                      <p class="textotitulo" id="vermunicipio"></p>
+                      </div>
+                  </div>
+                  
+                  
+              </div>
+          </div>
       </div>
       </div>
   </div>

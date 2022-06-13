@@ -85,34 +85,22 @@ class ControladorPedidos
 
     }
 
-    public static function ctrCrearCita($datos){
+    public static function ctrCrearCliente($datos){
 
-        $datosCita = array(
-            "fecha"            => $datos["fecha"],
-            "hora"             => $datos["hora"],
-            "nombres"          => $datos["nombre"],
+        $datosCliente = array(
+            
+            "nombres"          => $datos["nombres"],
+            "apellidos"        => $datos["apellidos"],
             "celular"          => $datos["celular"],
+            "email"            => $datos["email"],
             "pote"             => $datos["pote"],
-            "acta"             => $datos["acta"],
-            "servicio"         => $datos["servicio"],
             "soñadora_id"      => $datos["soñadora"],
        );
 
 
-        $tabla = 'citas';
+        $tabla = 'clientes';
 
-        $respuesta = ModeloPedidos::mdlCrearCita($tabla, $datosCita);
-
-        return $respuesta;
-
-
-    }
-
-    public static function ctrMostrarCitasSoñador($item, $valor){
-
-        $tabla = 'citas';
-
-        $respuesta = ModeloPedidos::mdlMostrarCitasSoñador($tabla, $item, $valor);
+        $respuesta = ModeloPedidos::mdlCrearCliente($tabla, $datosCliente);
 
         return $respuesta;
 
@@ -150,6 +138,46 @@ class ControladorPedidos
 
         return $respuesta;
 
+
+    }
+
+
+    public static function ctractualizarEnvioPedido($guia,$empresa,$item,$valor){
+        
+        $tabla = 'pedidos';
+        
+        $respuesta = ModeloPedidos::mdlactualizarEnvioPedido($tabla, $guia, $empresa, $item, $valor);
+
+        return $respuesta;
+    }
+
+
+    public static function ctractualizarFotoPedido($foto,$item,$valor){
+        
+        $tabla = 'pedidos';
+
+        $respuesta = ModeloPedidos::mdlactualizarFotoPedido($tabla, $foto, $item, $valor);
+
+        return $respuesta;
+    }
+
+    public static function ctrbuscarPedidoDetalle($item, $valor){
+
+        $tabla = 'pedidos_detalle';
+
+        $respuesta = ModeloPedidos::mdlbuscarPedidoDetalle($tabla, $item, $valor);
+
+        return $respuesta;
+
+
+    }
+
+
+    public static function ctrMostrarPedidos(){
+
+        $respuesta = ModeloPedidos::mdlmostrarPedidos();
+
+        return $respuesta;
 
     }
 

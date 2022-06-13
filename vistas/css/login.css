@@ -115,6 +115,12 @@ body {
     color: #039BE5
 }
 
+.btnGuardar{
+    background-color: #7552ff !important;
+    color: white !important;
+    
+  }
+
 @media(max-width: 380px) {
     .wrapper {
         margin: 30px 20px;

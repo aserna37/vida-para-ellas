@@ -61,4 +61,50 @@ class ModeloUsuario
 
     }
 
+    public static function mdlActualizarContraseña($tabla,$item,$valor)
+    {
+        $stmt = Conexion::conectar()->prepare("UPDATE $tabla SET password =:password WHERE usuario =:item");
+        $stmt->bindParam(":password", $valor, PDO::PARAM_STR);
+        $stmt->bindParam(":item", $item, PDO::PARAM_STR);
+
+        if($stmt->execute()) {
+
+            return "ok";
+
+        } else {
+
+            return "error";
+
+        }
+
+        $stmt->close();
+
+        $stmt = null;
+
+    }
+
+    public static function mdlActualizarFoto($tabla,$item,$valor)
+    {
+        $stmt = Conexion::conectar()->prepare("UPDATE $tabla SET foto =:foto WHERE usuario =:item");
+        $stmt->bindParam(":foto", $valor, PDO::PARAM_STR);
+        $stmt->bindParam(":item", $item, PDO::PARAM_STR);
+
+        if($stmt->execute()) {
+
+            return "ok";
+
+        } else {
+
+            return "error";
+
+        }
+
+        $stmt->close();
+
+        $stmt = null;
+
+    }
+
+
+
 }

@@ -39,19 +39,19 @@
     margin-top: -60px;
 }
 
-
 [class^='imghvr-'],
 [class*=' imghvr-'] {
   background-color: white !important;
 }
 
-figcaption > h5{
+figcaption > img{
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 30px;
-  font-size: 20px;
-
+  position: absolute;
+  top:0px;
+  left: 0px;
+  
 }
 
 .nombre_menu > .container{
@@ -102,7 +102,7 @@ figcaption > h5{
   box-shadow: 0 1px 1px rgba(229, 103, 23, 0.075)inset, 0 0 8px rgb(117,82,255) !important;
 }
 
-.btnGuardar, .btnGuardarPedido, .btnGuardarCita{
+.btnGuardar, .btnGuardarPedido, .btnGuardarEmbalaje, .btnGuardarCliente{
   background-color: #7552ff !important;
   color: white !important;
   width: 150px !important;
@@ -121,10 +121,19 @@ figcaption > h5{
 
 
 .textotitulo{
-color: rgb(117,82,255) !important ;
-text-shadow: 7px 3px 7px rgba(107,120,109,0.5);
 font-weight: bold;
 font-size: 18px;
+}
+
+.fondoVer{
+  background-color: #8B80FF;
+  -webkit-border-top-right-radius: 10px;
+  -webkit-border-bottom-right-radius: 10px;
+  -moz-border-radius-topright: 10px;
+  -moz-border-radius-bottomright: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  
 }
 
 
@@ -179,6 +188,10 @@ font-size: 18px;
   color: white !important;
 }
 
+.imgE{
+  cursor: pointer;
+}
+
 
 
 
@@ -206,7 +219,18 @@ font-size: 18px;
     margin-top: -20px;
   }
 
+  .retorno > a{
+    background-color: #004B6F !important;
+    color: white;
+    margin-right: 20px;
+    -webkit-box-shadow: 9px 10px 15px -9px #000000; 
+    box-shadow: 9px 10px 15px -9px #000000;
+  }
   
+  .nombre_menu{
+   margin-top: 25px;
+  }
+
 }
 
 

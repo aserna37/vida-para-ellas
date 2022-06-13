@@ -194,10 +194,12 @@ public static function mdlGuardarProductoDetalle($tabla, $tabla1, $datos)
     {
            
     $stmt = Conexion::conectar()->prepare("SELECT productos.nombre as Pro_nombre,
-                                                          productos_cantidad_total.total as Pro_total,
-                                                          productos.id as Pro_id
-                                                   FROM productos INNER JOIN productos_cantidad_total ON
-                                                   productos.id = productos_cantidad_total.producto_id");
+                                                  productos_cantidad_total.total as Pro_total,
+                                                  productos.id as Pro_id,
+                                                  salida_cantidad_total.total as Sal_total
+                                                  FROM productos 
+                                                  INNER JOIN productos_cantidad_total ON productos.id = productos_cantidad_total.producto_id
+                                                  INNER JOIN salida_cantidad_total ON productos.id = salida_cantidad_total.producto_id");
         
         
         $stmt->execute();
@@ -226,6 +228,69 @@ public static function mdlGuardarProductoDetalle($tabla, $tabla1, $datos)
             $stmt1->close();
     
             $stmt1 = null;
+
+    }
+
+    public static function mdlbuscarProductoSalida($tabla,$item,$valor)
+    {
+           
+    $stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item = :$item");
+        
+    $stmt->bindParam(":" . $item, $valor, PDO::PARAM_STR);    
+        
+    $stmt->execute();
+
+        return $stmt->fetchAll();
+    
+                
+            $stmt->close();
+    
+            $stmt = null;
+
+    }
+
+    public static function mdlCrearProductoSalida($tabla,$item,$valor,$cantidadProducto)
+    {
+           
+        $stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(producto_id, total) VALUES 
+        (:producto_id, :total)");
+
+        $stmt->bindParam(":producto_id", $valor, PDO::PARAM_STR);
+        $stmt->bindParam(":total", $cantidadProducto, PDO::PARAM_STR);    
+        
+        if ($stmt->execute()) {
+
+            return "ok";
+    
+        } else {
+    
+            return "error";
+    
+        }
+            
+    
+    $stmt->close();
+    $stmt = null;
+
+    }
+
+    public static function mdlActualizarProductoSalida($tabla, $item, $valor)
+    {
+           
+    $stmt = Conexion::conectar()->prepare("UPDATE $tabla SET total=:total WHERE producto_id = :item");
+
+        
+    $stmt->bindParam(":total", $valor, PDO::PARAM_STR);
+    $stmt->bindParam(":item", $item, PDO::PARAM_STR); 
+        
+    $stmt->execute();
+
+        return $stmt->fetchAll();
+    
+                
+            $stmt->close();
+    
+            $stmt = null;
 
     }
 

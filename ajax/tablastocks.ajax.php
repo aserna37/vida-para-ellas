@@ -18,12 +18,20 @@ class TablaStocks
             $acciones = "<div class='btn-group'><button class='btn btn-warning btn-sm btnVerProductoDetalle' verProductoId='" . $stocks[$i]["Pro_id"] . "'>Ver Detalle</button></div>";
 
                 $Pro_total = "" . $stocks[$i]["Pro_total"] . " unidades";
-                
+                $Sal_total = "" . $stocks[$i]["Sal_total"] . " unidades";
+                $disponible = intval($stocks[$i]["Pro_total"]) - intval($stocks[$i]["Sal_total"]);
+
+                if($disponible < 20){
+                    $verCantidad = "<h5><span class='badge rounded-pill bg-danger text-white'>".$disponible." Unidades</span></h5>";
+                }else{
+                    $verCantidad = "<h5><span class='badge rounded-pill bg-success text-white'>".$disponible." Unidades</span></h5>";
+                }
 
                 $sub_array = array();
-                $sub_array[] = $stocks[$i]["Pro_nombre"];
+                $sub_array[] = ucfirst($stocks[$i]["Pro_nombre"]);
                 $sub_array[] = $Pro_total;
-                $sub_array[] = 0;
+                $sub_array[] = $Sal_total;
+                $sub_array[] = $verCantidad;
                 $sub_array[] = $acciones;
                 $data[] = $sub_array;
 

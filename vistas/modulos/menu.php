@@ -9,10 +9,10 @@
 <div class="container">
 <div class="row animate__animated animate__fadeInUp">
     <div class="col-4 col-sm-2">
-        <figure class="imghvr-shutter-out-diag-2 shadow p-3 mb-5 bg-white rounded">
-            <img src="vistas/img/plantillas/logo.png">
+    <figure class="imghvr-shutter-out-diag-2 shadow p-3 mb-5 bg-white rounded">
+        <img src="vistas/img/plantillas/menu/productos_s.png" class="img-fluid">
             <figcaption class="ml-auto">
-            <h5 class="ih-fade-up ih-delay-sm text-center">Productos</h5>
+            <img src="vistas/img/plantillas/menu/productos_I.png" class="img-fluid">
             </figcaption>
                 <a href="productos"></a>
         </figure>
@@ -20,9 +20,9 @@
 
     <div class="col-4 col-sm-2">
         <figure class="imghvr-shutter-out-diag-2 shadow p-3 mb-5 bg-white rounded">
-        <img src="vistas/img/plantillas/logo.png">
+        <img src="vistas/img/plantillas/menu/stocks_s.png" class="img-fluid">
             <figcaption class="ml-auto">
-            <h5 class="ih-fade-up ih-delay-sm text-center">Stocks</h5>
+            <img src="vistas/img/plantillas/menu/stocks_I.png" class="img-fluid">
             </figcaption>
                 <a href="stocks"></a>
         </figure>
@@ -30,39 +30,39 @@
 
     <div class="col-4 col-sm-2">
         <figure class="imghvr-shutter-out-diag-2 shadow p-3 mb-5 bg-white rounded">
-        <img src="vistas/img/plantillas/logo.png">
+        <img src="vistas/img/plantillas/menu/soñadores_s.png" class="img-fluid">
             <figcaption class="ml-auto">
-            <h5 class="ih-fade-up ih-delay-sm text-center">Soñadores</h5>
+            <img src="vistas/img/plantillas/menu/soñadores_I.png" class="img-fluid">
             </figcaption>
                 <a href="soñadores"></a>
         </figure>
     </div>
 
     <div class="col-4 col-sm-2">
-        <figure class="imghvr-shutter-out-diag-2 shadow p-3 mb-5 bg-white rounded">
-        <img src="vistas/img/plantillas/logo.png">
+    <figure class="imghvr-shutter-out-diag-2 shadow p-3 mb-5 bg-white rounded">
+        <img src="vistas/img/plantillas/menu/pedidos_s.png" class="img-fluid">
             <figcaption class="ml-auto">
-            <h5 class="ih-fade-up ih-delay-sm text-center">Pedidos</h5>
+            <img src="vistas/img/plantillas/menu/pedidos_I.png" class="img-fluid">
             </figcaption>
-                <a href="productos"></a>
+                <a href="pedidos"></a>
+        </figure>
+    </div>
+
+    <div class="col-4 col-sm-2">
+    <figure class="imghvr-shutter-out-diag-2 shadow p-3 mb-5 bg-white rounded">
+        <img src="vistas/img/plantillas/menu/reportes_s.png" class="img-fluid">
+            <figcaption class="ml-auto">
+            <img src="vistas/img/plantillas/menu/reportes_I.png" class="img-fluid">
+            </figcaption>
+                <a href="reportes"></a>
         </figure>
     </div>
 
     <div class="col-4 col-sm-2">
         <figure class="imghvr-shutter-out-diag-2 shadow p-3 mb-5 bg-white rounded">
-        <img src="vistas/img/plantillas/logo.png">
+        <img src="vistas/img/plantillas/menu/opciones_s.png" class="img-fluid">
             <figcaption class="ml-auto">
-            <h5 class="ih-fade-up ih-delay-sm text-center">Reportes</h5>
-            </figcaption>
-                <a href="productos"></a>
-        </figure>
-    </div>
-
-    <div class="col-4 col-sm-2">
-        <figure class="imghvr-shutter-out-diag-2 shadow p-3 mb-5 bg-white rounded">
-        <img src="vistas/img/plantillas/logo.png">
-            <figcaption class="ml-auto">
-            <h5 class="ih-fade-up ih-delay-sm text-center">Parametrización</h5>
+            <img src="vistas/img/plantillas/menu/opciones_I.png" class="img-fluid">
             </figcaption>
                 <a type='button' data-toggle="modal" data-target="#ModalParametro"></a>
         </figure>

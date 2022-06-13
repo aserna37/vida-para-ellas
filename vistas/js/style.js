@@ -80,19 +80,21 @@ $(document).ready(function() {
 $('#ModalCrearSoñadora #agregarSoñador').submit(function(e){
   e.preventDefault();
    var addform = $(this).serialize();
+   
   $.ajax({
     type: 'POST',
     url: 'ajax/soñadores.ajax.php',
     data: addform,
     success: function(respuesta){
-    // alert(respuesta);
+    console.log(respuesta);
       if(respuesta == 'ok'){
         $('#ModalCrearSoñadora').modal('hide');
         Swal.fire({
           type: 'success',
           title: 'Soñador registrado exitosamente',                          
-          });
-          window.location.reload();  
+          }).then((result) => {
+            window.location.reload();
+          });  
       }else{
         Swal.fire({
           type: 'error',
@@ -184,8 +186,6 @@ $('#tablaSoñadores tbody').on("click", ".btnEditarSoñador", function() {
   cache: false,
   contentType: false,
   processData: false,
-  //   // dataType: "json",
-    
   success: function(respuesta) {
     var datos = JSON.parse(respuesta)
     console.log(datos);
@@ -713,7 +713,7 @@ function validarImagen(obj){
 $('#ModalCrearPedido').on("click", ".btnGuardarPedido", function(e) {
   
   e.preventDefault();
-
+  
   if(($(".tablaIngresosProductosSoñador tbody").find("#detPedido").length == 0)){
     return Swal.fire({
       type: 'error',
@@ -762,7 +762,7 @@ $('#ModalCrearPedido').on("click", ".btnGuardarPedido", function(e) {
 });
 
 // ******************************************************
-// BOTON CANCELAR CITA **********************************
+// BOTON CANCELAR CLIENTE **********************************
 $('#ModalCrearCita').on("click", ".btnCancelar", function(e) {
   e.preventDefault();
   $('#ModalCrearCita').on('hidden.bs.modal', function () {
@@ -774,26 +774,23 @@ $('#ModalCrearCita').on("click", ".btnCancelar", function(e) {
 
 
 //***************************************************** */ 
-// GUARDAR CITA EN EL SISTEMA****************************
-$('#ModalCrearCita #crearCita').submit(function(e){
+// GUARDAR CLIENTE EN EL SISTEMA****************************
+$('#ModalCrearCliente #crearCliente').submit(function(e){
     
   e.preventDefault();
-  var fecha = $('#fecha').val();
-  var hora = $('#hora').val();
+  
   var nombres = $('#nombres').val();
+  var apellidos = $('#apellidos').val();
   var celular = $('#celular').val();
+  var email = $('#email').val();
   var pote = $('#pote').val();
-  var acta = $('#acta').val();
-  var servicio = $('#servicio').val();
   var soñadora = $('#soñador').val();
   var datos = new FormData();
-  datos.append("fecha",fecha);
-  datos.append("hora",hora);
   datos.append('nombres',nombres);
+  datos.append('apellidos',apellidos);
   datos.append("celular", celular);
-  datos.append("pote",pote);
-  datos.append('acta',acta);
-  datos.append('servicio',servicio);
+  datos.append("email",email);
+  datos.append('pote',pote);
   datos.append('soñadora',soñadora);
 
   $.ajax({
@@ -805,10 +802,11 @@ $('#ModalCrearCita #crearCita').submit(function(e){
     processData: false,
     // dataType: "json",
     success: function(respuesta) {
+      console.log(respuesta);
         Swal.fire({
           type: 'success',
           confirmButtonText: 'Ok',
-          title: 'Cita Creada',                          
+          title: 'Cliente Creado',                          
         }).then((result) => {
           window.location.reload();
           
@@ -862,7 +860,52 @@ var tablaPedidosPendientes = $('#tablaPedidosPendientes').DataTable({
         }
   });
 
-  // DETALLE MODAL DEL PENDIENTE
+  // ****************************************************************************************
+  // TABLA PEDIDOS ENVIADOS
+
+  var tablaPedidosEnviados = $('#tablaPedidosEnviados').DataTable({
+    responsive: true,
+    autoWidth: false,    
+    "language": {
+          "url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json",
+          "sProcessing": "Procesando...",
+          "sLengthMenu": "Mostrar _MENU_ registros",
+          "sZeroRecords": "No se encontraron resultados",
+          "sEmptyTable": "Ningún dato disponible en esta tabla",
+          "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_",
+          "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0",
+          "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+          "sInfoPostFix": "",
+          "sSearch": "Buscar:",
+          "sUrl": "",
+          "sInfoThousands": ",",
+          "sLoadingRecords": "Sin Registros",
+          "oPaginate": {
+              "sFirst": "Primero",
+              "sLast": "Último",
+              "sNext": "Siguiente",
+              "sPrevious": "Anterior"
+            },
+            "oAria": {
+              "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+              "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+            }
+          },
+         "ajax" : {
+          url:"ajax/tablabodegaE.ajax.php",
+          type:"POST",
+          "deferRender": true,
+          "retrieve": true,
+          "processing": true,
+          }
+    });
+
+
+
+
+
+  // ****************************************************************************************
+  // DETALLE MODAL DEL PENDIENTE PEDIDO
 
   $('#tablaPedidosPendientes tbody').on("click", ".btnPendientePedido", function(e) {
     e.preventDefault();
@@ -884,11 +927,38 @@ var tablaPedidosPendientes = $('#tablaPedidosPendientes').DataTable({
         $('#pendientePedido').append(respuesta);
         $('#modalVerPedido').modal('show');
       }
-  })
+  });
+});
+
+  // ***************************************************************************
+  // DETALLE MODAL ENVIADO PEDIDO
+  $('#tablaPedidosEnviados tbody').on("click", ".btnEnviadoPedido", function(e) {
+    e.preventDefault();
+
+    var idPedidoF = $(this).attr("idPedidoF");
+    var datos = new FormData();
+    datos.append("idPedidoF", idPedidoF);
+        
+    $.ajax({
+      url: "ajax/pedidos.ajax.php",
+      method: "POST",
+      data: datos,
+      cache: false,
+      contentType: false,
+      processData: false,
+      success: function(respuesta) {
+        $("#enviadoPedido").empty();
+        $('#enviadoPedido').append(respuesta);
+        $('#modalVerPedidoE').modal('show');
+      }
+  });
+});
+  // ***************************************************************************
+
 
     
     
-  });
+  
 // rotulo de embalaje
   $('#modalVerPedido #pendientePedido').on("click", ".btnRotulo", function(e) {
     e.preventDefault();
@@ -940,9 +1010,19 @@ var tablaPedidosPendientes = $('#tablaPedidosPendientes').DataTable({
 
 $('#modalVerPedido .modal-footer').on("click", "#btnBodega", function(e) {
   e.preventDefault();
+  var guia = document.getElementById('guia').value;
+  if(guia == ''){
+    return Swal.fire({
+      type: 'error',
+      title: 'Debe Agregar la Guia',                          
+      });
+  }
+  var empresa = document.getElementById('empresa').value;
   var datoPedido = document.getElementById('pedido').value;
   var datos = new FormData();
   datos.append("datoPedido", datoPedido);
+  datos.append("guia", guia);
+  datos.append("empresa", empresa);
 
   $.ajax({
     url: "ajax/pedidos.ajax.php",
@@ -952,6 +1032,7 @@ $('#modalVerPedido .modal-footer').on("click", "#btnBodega", function(e) {
     contentType: false,
     processData: false,
     success: function(respuesta) {
+      console.log(respuesta);
       if(respuesta =='ok'){
       return Swal.fire({
         type: 'success',
@@ -965,6 +1046,14 @@ $('#modalVerPedido .modal-footer').on("click", "#btnBodega", function(e) {
   }
   
 });
+});
+
+// ******************************************************
+
+// VALIDAR IMAGEN DE EMBALAJE
+$('#modalMostrarPedido').on("change", "#fotoPedido", function(e) {
+  e.preventDefault();
+  validarImagen(this);
 });
 
 // ******************************************************
@@ -1110,10 +1199,295 @@ $('#tablaUsuarios tbody').on("click", ".btnVerSoñador", function() {
   
   // ************************************************
 
+  // ****************************************************** 
 
 
+  // TABLAS DE EMBALAJE
+
+var tablaEmbalaje = $('#tablaEmbalaje').DataTable({
+  responsive: true,
+  autoWidth: false,    
+  "language": {
+        "url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json",
+        "sProcessing": "Procesando...",
+        "sLengthMenu": "Mostrar _MENU_ registros",
+        "sZeroRecords": "No se encontraron resultados",
+        "sEmptyTable": "Ningún dato disponible en esta tabla",
+        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_",
+        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0",
+        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+        "sInfoPostFix": "",
+        "sSearch": "Buscar:",
+        "sUrl": "",
+        "sInfoThousands": ",",
+        "sLoadingRecords": "Sin Registros",
+        "oPaginate": {
+            "sFirst": "Primero",
+            "sLast": "Último",
+            "sNext": "Siguiente",
+            "sPrevious": "Anterior"
+          },
+          "oAria": {
+            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+          }
+        },
+       "ajax" : {
+        url:"ajax/tablaembalaje.ajax.php",
+        type:"POST",
+        "deferRender": true,
+        "retrieve": true,
+        "processing": true,
+        }
+  });
+// **************************************************
+
+// MOSTRAR PEDIDO EMBALAJE
+// DETALLE MODAL DEL PENDIENTE
+
+$('#tablaEmbalaje tbody').on("click", ".btnMostrarPedido", function(e) {
+  e.preventDefault();
+  var idPedidoE = $(this).attr("idPedidoE");
+  var datos = new FormData();
+  datos.append("idPedidoE", idPedidoE);
+  document.getElementById('pedidoE').value = idPedidoE;
+  
+  $.ajax({
+    url: "ajax/pedidos.ajax.php",
+    method: "POST",
+    data: datos,
+    cache: false,
+    contentType: false,
+    processData: false,
+    success: function(respuesta) {
+      $("#pendienteEmbalaje").empty();
+      $('#pendienteEmbalaje').append(respuesta);
+      $('#modalMostrarPedido').modal('show');
+      
+    }
+})
+
+  
+  
+});
+// *************************************************
+// TOGGLE IMAGEN EMBALAJE
+$('#modalMostrarPedido tbody').on("click", ".imgE", function(e) {
+  $(this).attr("src", 'vistas/img/plantillas/good.png');
+});
+
+// PEDIDO YA EMBALADO Y PARA ENVIAR
+
+$('#modalMostrarPedido .modal-footer').on("click", "#btnEmbalaje", function(e) {
+  e.preventDefault();
+  
+  var Imagen = $('#fotoPedido').val();
+  
+  if (Imagen == ''){
+    return Swal.fire({
+      type: 'error',
+      title: 'Debe agregar foto del pedido embalado',                          
+      });
+      
+  }
+  
+  var datoPedidoE = document.getElementById('pedidoE').value;
+  var fotoPedidoE = $('#fotoPedido').prop('files')[0];
+  var datos = new FormData();
+  datos.append("datoPedidoE", datoPedidoE);
+  datos.append("fotoPedidoE", fotoPedidoE);
+  console.log(datos);
+  $.ajax({
+    url: "ajax/pedidos.ajax.php",
+    method: "POST",
+    data: datos,
+    cache: false,
+    contentType: false,
+    processData: false,
+    success: function(respuesta) {
+      if(respuesta =='ok'){
+      return Swal.fire({
+        type: 'success',
+        confirmButtonText: 'Ok',
+        title: 'Pedido Embalado',                          
+      }).then((result) => {
+        window.location.reload();
+      });
+
+    } 
+  }
+  
+});
+});
 
 
+// RESETEA EL MODAL DE OLVIDA CONTRASEÑA
+$('#ModalNuevaContraseña').on('hidden.bs.modal', function () {
+  $('#ModalNuevaContraseña form')[0].reset();
+  });
+//
+
+// ENVIO USUARIO PARA RESTABLECER CONTRASEÑA
+$('#ModalNuevaContraseña #buscarUsuario').submit(function(e){
+  e.preventDefault();
+  var addform = $(this).serialize();
+  $.ajax({
+    type: 'POST',
+    url: 'ajax/usuarios.ajax.php',
+    data: addform,
+    success: function(respuesta){
+    console.log(respuesta);
+      if(respuesta == 'ok'){
+        $('#ModalNuevaContraseña').modal('hide');
+        Swal.fire({
+          type: 'success',
+          title: 'Verifique su correo electronico',                          
+          });
+          //window.location.reload();  
+      }else{
+        Swal.fire({
+          type: 'error',
+          title: 'Documento de identidad no encontrado',                          
+          });
+      }
+    }
+  });
+});
+// ********************************************************
+// ACTUALIZAR FOTO
+
+$('#Actualizar_foto').submit(function(e){
+  e.preventDefault();
+  if($('#foto_perfil').val()){
+    var documentoF = $('#documento').val();
+    var foto = $('#foto_perfil').prop('files')[0];
+    var datos = new FormData();
+    datos.append("documentoF",documentoF);
+    datos.append('foto',foto);
+        
+    $.ajax({
+      url: "ajax/usuarios.ajax.php",
+      method: "POST",
+      data: datos,
+      cache: false,
+      contentType: false,
+      processData: false,
+      success: function(respuesta) {
+        console.log(respuesta);
+        Swal.fire({
+          type: 'success',
+          confirmButtonText: 'Ok',
+          title: 'Foto actualizada',                          
+        }).then((result) => {
+          window.location.reload();
+        });
+      }
+  });
+  }else{
+    return Swal.fire({
+      type: 'error',
+      title: 'No ha agregado la imagen',                          
+      });
+  }
+
+});
+
+
+$('#Actualizar_contraseña').submit(function(e){
+    e.preventDefault();
+    if($('#contraseña').val() === $('#re_contraseña').val()){
+      var documentoC = $('#documento').val();
+      var contraseña = $('#contraseña').val();
+      var datos = new FormData();
+      datos.append("documentoC",documentoC);
+      datos.append("contraseña",contraseña);
+
+      $.ajax({
+        url: "ajax/usuarios.ajax.php",
+        method: "POST",
+        data: datos,
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function(respuesta) {
+          
+          Swal.fire({
+            type: 'success',
+            confirmButtonText: 'Ok',
+            title: 'Contraseña actualizada',                          
+          }).then((result) => {
+            window.location.reload();
+          });
+        }
+    });
+    }else{
+      return Swal.fire({
+        type: 'error',
+        title: 'Contraseñas no coinciden',                          
+        });
+    }
   });
 
+  $("#foto_perfil").change(function(e) {
+    e.preventDefault();
+      validarImagen(this);
+  }); 
+// ********************************************************
+// Validar is es Lider
+$('input[type=radio][name=checkLider]').on('change', function() {
+  switch ($(this).val()) {
+    case '1':
+      $('#esLider').css('display','none');
+      break;
+    case '0':
+      $('#esLider').css('display','block');
+      break;
+  }
+
+});
+
+
+
+// ********************************************************
+// TABLA PEDIDOS ADMINISTRADOR
+var tablaPedidosTotal = $('#tablaPedidosTotal').DataTable({
+  responsive: true,
+  autoWidth: false,    
+  "language": {
+        "url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json",
+        "sProcessing": "Procesando...",
+        "sLengthMenu": "Mostrar _MENU_ registros",
+        "sZeroRecords": "No se encontraron resultados",
+        "sEmptyTable": "Ningún dato disponible en esta tabla",
+        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_",
+        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0",
+        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+        "sInfoPostFix": "",
+        "sSearch": "Buscar:",
+        "sUrl": "",
+        "sInfoThousands": ",",
+        "sLoadingRecords": "Sin Registros",
+        "oPaginate": {
+            "sFirst": "Primero",
+            "sLast": "Último",
+            "sNext": "Siguiente",
+            "sPrevious": "Anterior"
+          },
+          "oAria": {
+            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+          }
+        },
+       "ajax" : {
+        url:"ajax/tablapedidos.ajax.php",
+        type:"POST",
+        "deferRender": true,
+        "retrieve": true,
+        "processing": true,
+        }
+        
+  });
+// ********************************************************
+
+});
   

@@ -33,14 +33,14 @@
       </a>
     </div>
     <div class="col-md-3 col-12 btnnuevo">
-      <a class="btn btn-sm btn-block rounded float-left" href="menu" data-toggle="modal" data-target="#ModalCrearCita" role="button">
+      <a class="btn btn-sm btn-block rounded float-left" href="menu" data-toggle="modal" data-target="#ModalCrearCliente" role="button">
       <lord-icon
-          src="https://cdn.lordicon.com/wfroncyf.json"
+          src="https://cdn.lordicon.com/dxjqoygy.json"
           trigger="loop"
           colors="primary:#fcee20,secondary:#fcee20"
           style="width:30px;height:30px">
       </lord-icon> 
-      Registro Cita
+      Registro Cliente
       </a>
     </div>
   </div>
@@ -52,7 +52,7 @@
       <div class="nav nav-pills nav-justified" id="nav-tab" role="tablist">
         <a class="nav-link active" id="nav-pendiente-tab" data-toggle="tab" href="#nav-pendiente" role="tab" aria-controls="nav-pendiente" aria-selected="true">Pedidos Pendientes</a>
         <a class="nav-link" id="nav-enviado-tab" data-toggle="tab" href="#nav-enviado" role="tab" aria-controls="nav-enviados" aria-selected="false">Pedidos Enviados</a>
-        <a class="nav-link" id="nav-cita-tab" data-toggle="tab" href="#nav-cita" role="tab" aria-controls="nav-cita" aria-selected="false">Registro de Citas</a>
+        <!-- <a class="nav-link" id="nav-cita-tab" data-toggle="tab" href="#nav-cita" role="tab" aria-controls="nav-cita" aria-selected="false">Registro de Clientes</a> -->
       </div>
     </nav>
     <div class="tab-content" id="nav-tabContent">
@@ -75,9 +75,10 @@
             Sin pedidos pendientes
             </div>';
         }else{
+          $dato = "<div class='row'>";
           for ($i = 0; $i < count($pedidoSoñador); $i++){
           
-            echo '<div class="shadow-sm p-3 mb-5 bg-white rounded">
+            $dato.= '<div class="col-md-4 col-sm-12 shadow-sm p-3 mb-5 bg-white rounded">
                 <h6>No. Pedido: <strong>P2022-'. $pedidoSoñador[$i]['id'] .'</strong></h6> 
                 <h6>Fecha: <strong>'. $pedidoSoñador[$i]['fecha'] .'</strong></h6>
                 <h6>Valor: <strong>$'.number_format($pedidoSoñador[$i]['total']).'</strong></h6>
@@ -85,6 +86,8 @@
                 <hr>   
                   </div>';
           }
+          $dato.="</div>";
+          echo $dato;
         }
 
           
@@ -103,7 +106,7 @@
         $item = 'persona_id';
         $valor = $_SESSION['id'];
         $item1 = 'estado';
-        $valor1 = 4;
+        $valor1 = 3;
 
         $pedidoSoñador = ControladorPedidos::ctrMostrarPedidosSoñador($item, $valor, $item1, $valor1);
         
@@ -112,17 +115,31 @@
             Sin pedidos enviados
             </div>';
         }else{
-          for ($i = 0; $i < count($pedidoSoñador); $i++){
+          $dato = "<div class='row'>";
           
-            echo '<div class="shadow-sm p-3 mb-5 bg-white rounded">
+          for ($i = 0; $i < count($pedidoSoñador); $i++){
+
+            $link = '';
+            
+            if($pedidoSoñador[$i]['empresa'] == 'transprensa'){
+                $link = "https://transprensa.com/Seguimiento/?remesa_codigo=";                
+            }elseif ($pedidoSoñador[$i]['empresa'] == 'envia') {
+                $link = "https://envia.co/";
+            }else{
+                $link = "https://www.interrapidisimo.com/sigue-tu-envio/?guia=";
+            }
+            
+            $dato.='<div class="col-md-4 col-sm-12 shadow-sm p-3 mb-5 bg-white rounded">
                 <h6>No. Pedido: <strong>P2022-'. $pedidoSoñador[$i]['id'] .'</strong></h6> 
                 <h6>Fecha: <strong>'. $pedidoSoñador[$i]['fecha'] .'</strong></h6>
                 <h6>Valor: <strong>$'.number_format($pedidoSoñador[$i]['total']).'</strong></h6>
-                <h6>Estado: <span class="badge badge-pill badge-success">Enviado</span>
-                <a href="#" class="badge badge-pill badge-warning">Ver Detalles</a></h6>
+                <h6>Guia: <a href="'.$link.''.$pedidoSoñador[$i]['guia'].'" target="blank"><span class="badge badge-pill badge-success">'. $pedidoSoñador[$i]['guia'] .'</span></a></h6>
+                <h6>Estado: <span class="badge badge-pill badge-success">Enviado</span></h6>
                 <hr>   
                   </div>';
           }
+          $dato.="</div>";
+          echo $dato;
         }
          
         ?>  
@@ -132,43 +149,16 @@
       </div>
 
     </div>
-    <div class="tab-pane fade" id="nav-cita" role="tabpanel" aria-labelledby="nav-cita-tab">
+    <!-- <div class="tab-pane fade" id="nav-cita" role="tabpanel" aria-labelledby="nav-cita-tab">
     <br>
     
     <div class="card shadow-sm p-3 mb-5 bg-white rounded">
       <div class="card-body">
-      <?php
-        $item = 'persona_id';
-        $valor = $_SESSION['id'];
-        
-
-        $citaSoñador = ControladorPedidos::ctrMostrarCitasSoñador($item, $valor);
-        
-        if(empty($citaSoñador)){
-          echo '<div class="alert alert-info" role="alert">
-            Sin citas
-            </div>';
-        }else{
-          
-          for ($i = 0; $i < count($citaSoñador); $i++){
-          
-            echo '<div class="shadow-sm p-3 mb-5 bg-white rounded">
-                <h6>Fecha: <strong>'. $citaSoñador[$i]['fecha'] .'</strong></h6>
-                <h6>Hora: <strong>'. $citaSoñador[$i]['hora'] .'</strong></h6>
-                <h6>Cliente: <strong>'.ucwords($citaSoñador[$i]['nombres']).'</strong></h6>
-                <h6>No. Pote: <strong>'.$citaSoñador[$i]['pote'].'</strong></h6>
-                <h6>Tipo de Servicio: <span class="badge badge-pill badge-info">'. $citaSoñador[$i]['servicio'] .'</span></h6>
-                <hr>   
-                  </div>';
-          }
-        }
-
-          
-        ?>
+      
       </div>
     </div>
 
-    </div>
+    </div> -->
 </div>
 
 
@@ -215,7 +205,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-4" hidden>
         <?php $valorInterno = rand();
             echo '<input type="text" name="datoInterno" class="datoInterno" value = '. $valorInterno.'>'; 
             echo '<input type="text" name="idSoñadora" class="idSoñadora" value= '. $_SESSION['usuario'].'>';
@@ -289,6 +279,7 @@
     
   </tbody>
 </table>
+        <p class="text-center bg-danger text-white rounded">Nota: despues de confirmar su pedido este pasa a revisión de existencias y verificación de ingreso de pago.</p>
         </div>
         </div>
            <div class="modal-footer">
@@ -305,40 +296,34 @@
 
 
 <!-- ********************************************************* -->
-<!-- MODAL CREAR CITA **************************************** -->
+<!-- MODAL CREAR CLIENTE **************************************** -->
 
-<div class="modal fade" id="ModalCrearCita" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="ModalCrearCliente" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">Registro de Cita</h5>
+        <h5 class="modal-title" id="staticBackdropLabel">Registro de Clientes</h5>
       </div>
-      <form id="crearCita">
+      <form id="crearCliente">
       <div class="modal-body">
         
       <div class="form-group row">
-          <div class="form-group col-sm-6">
-              <label for="fecha" class="col-form-label col-form-label-sm">Fecha</label>
-              <input type="date" class="form-control form-control-sm"
-              name="fecha"
-              id="fecha"
-              required>
-          </div> 
-
-          <div class="form-group col-sm-6">
-              <label for="hora" class="col-form-label col-form-label-sm">Hora</label>
-              <input type="time" class="form-control form-control-sm"
-              name="hora"
-              id="hora"
-              required>
-          </div> 
-
+          
           <div class="form-group col-sm-12">
-              <label for="nombres" class="col-form-label col-form-label-sm">Nombre y Apellidos del Cliente</label>
+              <label for="nombres" class="col-form-label col-form-label-sm">Nombre del Cliente</label>
               <input type="text" class="form-control form-control-sm"
               name="nombres"
               onkeypress="return ((event.charCode >= 65 && event.charCode <= 90) || (event.charCode >= 97 && event.charCode <= 122) || (event.charCode == 32) || (event.charCode == 209) || (event.charCode == 241))"
               id="nombres"
+              minlength="3" required>
+          </div>
+
+          <div class="form-group col-sm-12">
+              <label for="apellidos" class="col-form-label col-form-label-sm">Apellidos del Cliente</label>
+              <input type="text" class="form-control form-control-sm"
+              name="apellidos"
+              onkeypress="return ((event.charCode >= 65 && event.charCode <= 90) || (event.charCode >= 97 && event.charCode <= 122) || (event.charCode == 32) || (event.charCode == 209) || (event.charCode == 241))"
+              id="apellidos"
               minlength="3" required>
           </div>
           
@@ -350,6 +335,13 @@
                 maxlength="10" 
                 id="celular" required>
           </div>
+
+          <div class="form-group col-sm-6">
+                <label for="email" class="col-form-label col-form-label-sm">Email</label>
+                <input type="email" class="form-control form-control-sm" 
+                name="email" 
+                id="email">
+          </div>
           
           <div class="form-group col-sm-6">
                 <label for="pote" class="col-form-label col-form-label-sm">No. Pote</label>
@@ -360,23 +352,7 @@
                 id="pote" required>
           </div>
 
-          <div class="form-group col-sm-6">
-                <label for="acta" class="col-form-label col-form-label-sm">No. Acta</label>
-                <input type="text" class="form-control form-control-sm" 
-                onkeypress="return event.charCode >= 48 && event.charCode <= 57" 
-                name="acta" 
-                maxlength="10" 
-                id="acta" required>
-          </div>
-
-          <div class="form-group col-sm-6">
-                <label for="servicio" class="col-form-label col-form-label-sm">Tipo de Servicio</label>
-                <select class="form-control form-control-sm rounded" name="servicio" id="servicio" required>
-                    <option selected value="">Seleccione...</option>
-                    <option value="Primera Vez">Primera Vez</option>
-                    <option value="Retoque">Retoque</option>
-                </select>
-          </div> 
+          
           
           
                 <input type="text" class="form-control form-control-sm" 
@@ -388,7 +364,7 @@
 
         </div>
         <div class="modal-footer">
-          <button type="submit" class="btn btnGuardarCita">Registrar Cita</button>
+          <button type="submit" class="btn btnGuardarCliente">Registrar Cliente</button>
           <button type="button" class="btn btnCancelar" data-dismiss="modal">Cancelar</button>
         </div>
       </div>

@@ -18,6 +18,7 @@ class ControladorSoñadores
             "municipio_id"  => $datos["municipio_id"],
             "estado"        => $datos["estado"],
             "rol_id"        => $datos["rol_id"],
+            "lider"         => $datos["lider"],
         );
 
         $respuesta = ModeloSoñadores::mdlIngresarSoñador("personas", $datosSoñador);
@@ -78,6 +79,14 @@ class ControladorSoñadores
         );
 
         $respuesta = ModeloSoñadores::mdlEditarSoñador("personas", $datosSoñador);
+
+        return $respuesta;
+    }
+
+    public static function ctrMostrarLideres()
+    {
+        $tabla = 'personas';
+        $respuesta = ModeloSoñadores::mdlMostrarLideres($tabla);
 
         return $respuesta;
     }

@@ -43,8 +43,8 @@ class TablaSoñadores
 
                 $sub_array = array();
                 $sub_array[] = $soñadores[$i]["documento"];
-                $sub_array[] = $soñadores[$i]["nombres"];
-                $sub_array[] = $soñadores[$i]["apellidos"];
+                $sub_array[] = ucwords($soñadores[$i]["nombres"]);
+                $sub_array[] = ucwords($soñadores[$i]["apellidos"]);
                 $sub_array[] = $mostrarMunicipios["Mun_nombre"];
                 $sub_array[] = $mostrarMunicipios["Dep_nombre"];
                 $sub_array[] = $estado;

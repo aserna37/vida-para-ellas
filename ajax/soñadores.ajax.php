@@ -9,6 +9,21 @@ require_once "../modelos/departamento.modelo.php";
 require_once "../controladores/usuarios.controlador.php";
 require_once "../modelos/usuario.modelo.php";
 
+require_once "../controladores/lideres.controlador.php";
+require_once "../modelos/lider.modelo.php";
+
+
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\SMTP;
+
+require_once '../vistas/plugins/PHPMailer/src/Exception.php';
+require_once '../vistas/plugins/PHPMailer/src/PHPMailer.php';
+require_once '../vistas/plugins/PHPMailer/src/SMTP.php';
+
+
+
 class AjaxSoñadores
 {
 
@@ -29,10 +44,14 @@ class AjaxSoñadores
                 "municipio_id"  => $this->municipio_id,
                 "estado"        => $this->estado,
                 "rol_id"        => $this->rol_id,
-                
+                "lider"        => $this->lider,
+                "lider_documento" => $this->liderdocumento,
             );
 
+                        
             $respuesta = ControladorSoñadores::ctrCrearSoñador($datos);
+
+            echo $respuesta;
 
             if($respuesta == 'ok'){
 
@@ -48,10 +67,38 @@ class AjaxSoñadores
     
                 $crearLogin = ControladorUsuarios::ctrCrearUsuario($datosusuario);
     
-                echo $crearLogin;
-         
+                if($crearLogin == 'ok'){
+                    $mail = new PHPMailer();
+                    $mail->setLanguage('es', '../vistas/plugins/PHPMailer/language/directory/');
+                    $mail->isSMTP();
+                    $mail->Host = 'smtp.gmail.com';
+                    $mail->Port = 465;
+                    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+                    $mail->SMTPAuth = true;
+                    $mail->CharSet = 'UTF-8';
+                    $mail->isHTML(true);  
+                    $mail->Username = 'asernacalle@gmail.com';
+                    $mail->Password = 'jianonoqzalgsfnc';
+                    $mail->addAddress($this->email, $this->nombres.' '.$this->apellidos);
+                    $mail->Subject = 'Bienvenido a Vida para Ellas';
+                    $mail->msgHTML(file_get_contents('../vistas/modulos/plantilla_correo.html'), __DIR__);
+                    $mail->send();
+                }
+                
             }else{
                 echo $respuesta;
+            }
+
+            if($this->lider == '0'){
+
+                $datoslider = array(
+                    "documentoS"     => $this->documento,
+                    "liderS"         => $this->liderdocumento,
+                );
+
+                    
+                $relacionLider = ControladorLideres::ctrCrearLider($datoslider);
+                
             }
             
         } 
@@ -152,16 +199,18 @@ if (isset($_POST["opcion"])) {
             $soñador                = new AjaxSoñadores();
             $soñador->tipo          = $_POST["tipo"];
             $soñador->documento     = $_POST["documento"];
-            $soñador->nombres       = $_POST["nombres"];
-            $soñador->apellidos     = $_POST["apellidos"];
+            $soñador->nombres       = strtolower($_POST["nombres"]);
+            $soñador->apellidos     = strtolower($_POST["apellidos"]);
             $soñador->f_nacimiento  = $_POST["f_nacimiento"];
             $soñador->sexo          = $_POST["sexo"];
-            $soñador->direccion     = $_POST["direccion"];
+            $soñador->direccion     = strtolower($_POST["direccion"]);
             $soñador->celular       = $_POST["celular"];
-            $soñador->email         = $_POST["email"];
+            $soñador->email         = strtolower($_POST["email"]);
             $soñador->municipio_id  = $_POST["municipio_id"];
             $soñador->estado        = $_POST["estado"];
             $soñador->rol_id        = $_POST["rol_id"];
+            $soñador->lider         = $_POST["checkLider"];
+            $soñador->liderdocumento = $_POST["liderdocumento"];
 
             $soñador->ajaxCrearSoñador();
     }
@@ -218,13 +267,13 @@ if (isset($_POST["opcion"])) {
             
             $soñador                = new AjaxSoñadores();
             $soñador->documento     = $_POST["edocumento"];
-            $soñador->nombres       = $_POST["enombres"];
-            $soñador->apellidos     = $_POST["eapellidos"];
+            $soñador->nombres       = strtolower($_POST["enombres"]);
+            $soñador->apellidos     = strtolower($_POST["eapellidos"]);
             $soñador->f_nacimiento  = $_POST["ef_nacimiento"];
             $soñador->sexo          = $_POST["esexo"];
-            $soñador->direccion     = $_POST["edireccion"];
+            $soñador->direccion     = strtolower($_POST["edireccion"]);
             $soñador->celular       = $_POST["ecelular"];
-            $soñador->email         = $_POST["eemail"];
+            $soñador->email         = strtolower($_POST["eemail"]);
             $soñador->municipio_id  = $_POST["municipio_id"];
             $fecha = date("d/m/Y H:i:s");
             $soñador->fecha_modificacion = $fecha;

@@ -35,12 +35,13 @@
 <div class="card container shadow p-3 mb-5 bg-white rounded animate__animated animate__fadeInUp">
   <div class="card-body">
     <div class="table-responsive-sm">
-            <table class="table table-striped" style="width:100%" id="tablaStocks">
+            <table class="table table-striped text-center" style="width:100%" id="tablaStocks">
         <thead>
             <tr>
             <th scope="col">Producto</th>
             <th scope="col">Cantidades Total</th>
             <th scope="col">Ventas o Salidas</th>
+            <th scope="col">Cantidad Disponible</th>
             <th scope="col">Acciones</th>
             </tr>
         </thead>

@@ -103,6 +103,34 @@ class ControladorProductos
 
     }
 
+    public static function ctrbuscarProductoSalida($item, $valor){
+        
+        $tabla = 'salida_cantidad_total';        
+
+        $respuesta = ModeloProductos::mdlbuscarProductoSalida($tabla,$item,$valor);
+
+        return $respuesta;
+    }
+
+
+    public static function ctrCrearProductoSalida($item, $valor, $cantidadProducto){
+        
+        $tabla = 'salida_cantidad_total';
+        
+        $respuesta = ModeloProductos::mdlCrearProductoSalida($tabla,$item,$valor,$cantidadProducto);
+
+        return $respuesta;
+    }
+
+    public static function ctrActualizarProductoSalida($item, $valor){
+        
+        $tabla = 'salida_cantidad_total';
+        
+        $respuesta = ModeloProductos::mdlActualizarProductoSalida($tabla, $item, $valor);
+
+        return $respuesta;
+    }
+
 
 
     
