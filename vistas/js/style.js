@@ -1489,5 +1489,123 @@ var tablaPedidosTotal = $('#tablaPedidosTotal').DataTable({
   });
 // ********************************************************
 
+// RESETEA EL MODAL SALIDA MANUAL
+$('#ModalNuevaSalida').on('hidden.bs.modal', function () {
+  $('#ModalNuevaSalida form')[0].reset();
+  });
+//
+
+// TABLA SALIDAS MANUALES
+var tablaSalidas = $('#tablaSalidas').DataTable({
+  responsive: true,
+  autoWidth: false,    
+  "language": {
+        "url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json",
+        "sProcessing": "Procesando...",
+        "sLengthMenu": "Mostrar _MENU_ registros",
+        "sZeroRecords": "No se encontraron resultados",
+        "sEmptyTable": "Ningún dato disponible en esta tabla",
+        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_",
+        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0",
+        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+        "sInfoPostFix": "",
+        "sSearch": "Buscar:",
+        "sUrl": "",
+        "sInfoThousands": ",",
+        "sLoadingRecords": "Sin Registros",
+        "oPaginate": {
+            "sFirst": "Primero",
+            "sLast": "Último",
+            "sNext": "Siguiente",
+            "sPrevious": "Anterior"
+          },
+          "oAria": {
+            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+          }
+        },
+       "ajax" : {
+        url:"ajax/tablasalidas.ajax.php",
+        type:"POST",
+        "deferRender": true,
+        "retrieve": true,
+        "processing": true,
+        }
+        
+  });
+
+  // AGREGAR SALIDA MANUAL
+
+  $('#ModalNuevaSalida #agregarSalida').submit(function(e){
+    e.preventDefault();
+     var addform = $(this).serialize();
+    $.ajax({
+      type: 'POST',
+      url: 'ajax/salidas.ajax.php',
+      data: addform,
+      success: function(respuesta){
+        console.log(respuesta);
+        if(respuesta == 'ok'){
+          $('#ModalNuevaSalida').modal('hide');
+          Swal.fire({
+            type: 'success',
+            title: 'Salida manual realizada',                          
+            });
+            return window.location.reload();
+        }
+      }
+    });
+  });
+
+// ********************************************************
+// MODAL VER OBSERVACIONES
+
+$('#tablaSalidas tbody').on("click", ".btnVerObservaciones", function() {
+  var idSalida = $(this).attr("idSalida");
+  var datos = new FormData();
+  datos.append("idSalida",idSalida);
+  $.ajax({
+    url: "ajax/salidas.ajax.php",
+    method: "POST",
+    data: datos,
+    cache: false,
+    contentType: false,
+    processData: false,
+    // dataType: "json",
+    success: function(respuesta) {
+      $("#Observaciones").empty();
+      $('#Observaciones').append(respuesta);
+    }
+    });
+    $('#ModalVerObservaciones').modal('show');
+  });
+
+// ********************************************************
+
+// ********************************************************
+// MODAL VER DETALLE PEDIDO TABLA PEDIDOS
+
+$('#tablaPedidosTotal tbody').on("click", ".btnPedidoDetalle", function() {
+  var idPedidoD = $(this).attr("idPedido");
+  var datos = new FormData();
+  datos.append("idPedidoD",idPedidoD);
+  $.ajax({
+    url: "ajax/pedidos.ajax.php",
+    method: "POST",
+    data: datos,
+    cache: false,
+    contentType: false,
+    processData: false,
+    // dataType: "json",
+    success: function(respuesta) {
+      $("#DetallePedido").empty();
+      $('#DetallePedido').append(respuesta);
+    }
+    });
+    $('#ModalVerDetallePedido').modal('show');
+  });
+
+// ********************************************************
+
 });
   

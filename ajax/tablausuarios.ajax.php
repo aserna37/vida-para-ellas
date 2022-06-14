@@ -44,9 +44,9 @@ class TablaUsuarios
 
                 $sub_array = array();
                 $sub_array[] = $usuarios[$i]["documento"];
-                $sub_array[] = $usuarios[$i]["nombres"];
-                $sub_array[] = $usuarios[$i]["apellidos"];
-                $sub_array[] = $mostrarRol["nombre"];
+                $sub_array[] = ucwords($usuarios[$i]["nombres"]);
+                $sub_array[] = ucwords($usuarios[$i]["apellidos"]);
+                $sub_array[] = ucwords($mostrarRol["nombre"]);
                 $sub_array[] = $estado;
                 $sub_array[] = $acciones;
                 $data[] = $sub_array;

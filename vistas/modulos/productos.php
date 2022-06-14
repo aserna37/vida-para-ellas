@@ -35,7 +35,7 @@
 <div class="card container shadow p-3 mb-5 bg-white rounded animate__animated animate__fadeInUp">
   <div class="card-body">
     <div class="table-responsive-sm">
-            <table class="table table-striped" style="width:100%" id="tablaProductos">
+            <table class="table table-striped text-center" style="width:100%" id="tablaProductos">
         <thead>
             <tr>
             <th scope="col">Nombre</th>

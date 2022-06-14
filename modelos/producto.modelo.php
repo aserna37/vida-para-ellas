@@ -156,6 +156,13 @@ public static function mdlGuardarProductoDetalle($tabla, $tabla1, $datos)
             $totalAcumulado->bindParam(":producto_id", $datos["producto_id"], PDO::PARAM_STR);
             $totalAcumulado->bindParam(":total", $total, PDO::PARAM_STR);
             
+            $agregarSalida = Conexion::conectar()->prepare("INSERT INTO salida_cantidad_total(producto_id, total) VALUES
+            (:producto_id, 0)");
+
+            $agregarSalida->bindParam(":producto_id", $datos["producto_id"], PDO::PARAM_STR);
+
+            $agregarSalida->execute();
+            
             
             if ($totalAcumulado->execute()) {
 
@@ -202,14 +209,14 @@ public static function mdlGuardarProductoDetalle($tabla, $tabla1, $datos)
                                                   INNER JOIN salida_cantidad_total ON productos.id = salida_cantidad_total.producto_id");
         
         
-        $stmt->execute();
+    $stmt->execute();
 
-        return $stmt->fetchAll();
+    return $stmt->fetchAll();
     
                 
-            $stmt->close();
+    $stmt->close();
     
-            $stmt = null;
+    $stmt = null;
 
     }
 

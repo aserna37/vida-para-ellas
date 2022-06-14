@@ -414,6 +414,100 @@ class TablaPedidos
         
         
 
+    }
+    
+    
+    public function buscarPedidoDetalle(){
+
+
+        $item = 'id';
+        $valor = $this->idPedido;
+
+        $respuesta = ControladorPedidos::ctrbuscarPedido($item, $valor);
+
+        for ($i = 0; $i < count($respuesta); $i++){
+
+            $pedido = 'P2022-'.$respuesta[$i]["pedido"];
+            $nombres = ucwords($respuesta[$i]['nombres'])." ".ucwords($respuesta[$i]['apellidos']);
+            $fecha = $respuesta[$i]['fecha'];
+            $total = '$'.number_format($respuesta[$i]['total']);
+            $comprobante = $respuesta[$i]['comprobante'];
+            $guia = $respuesta[$i]['guia'];
+            $empresa = ucwords($respuesta[$i]['empresa']);
+            $link = '';
+            
+            if($empresa == 'transprensa'){
+                $link = "https://transprensa.com/Seguimiento/?remesa_codigo=";                
+            }elseif ($empresa == 'envia') {
+                $link = "https://envia.co/";
+            }else{
+                $link = "https://www.interrapidisimo.com/sigue-tu-envio/?guia=";
+            }
+
+            $item = 'pedidos_detalle.pedido_id';
+            $valor = $this->idPedido;
+                  
+            $respuestaDetalle = ControladorPedidos::ctrMostrarPedidoDetalle($item, $valor);
+
+            $tablaDetalle='';
+            for ($i = 0; $i < count($respuestaDetalle); $i++){
+
+                $producto = ucwords($respuestaDetalle[$i]['Ped_nombre']);
+                $cantidad = $respuestaDetalle[$i]['Ped_cantidad'];
+                
+                $tablaDetalle.="<tr><td>$producto</td><td>$cantidad</td></tr>";
+            }
+            
+
+
+
+            echo '<div class="row">
+            <div class="col-5">
+            <h4>Pedido:</h4>
+            <h4>Soñador:</h4>
+            <h4>Fecha:</h4>
+            <h4>Valor:</h4>
+            <h4>Comprobante:</h4>
+            <h4>Guia:</h4>
+            <h4>Empresa:</h4>
+
+            </div>
+            <div class="col-7">
+            <h4><span class="badge badge-pill badge-light">'.$pedido.'</span></h4>
+            <h4><span class="badge badge-pill badge-light">'.$nombres.'</span></h4>
+            <h4><span class="badge badge-pill badge-light">'.$fecha.'</span></h4>
+            <h4><span class="badge badge-pill badge-light">'.$total.'</span></h4>
+            <a class="btn btn-block btn-sm btn-outline-secondary" href="vistas/img/comprobantes/'.$comprobante.'" target="_blank">Ver Comprobante</a>
+            <a href="'.$link.''.$guia.'" target="blank"><h4><span class="badge badge-pill badge-success">'.$guia.'</span></h4></a>
+            <h4><span class="badge badge-pill badge-success">'.$empresa.'</span></h4>
+
+            </div>
+
+          </div>
+
+        <div class="row bg-light my-auto rounded">
+                <div class="col-12 text-center">
+                        <h5>Detalle Pedido</h5>
+                        <table class="table table-sm table-bordered">
+                    <thead>
+                    <tr>
+                    <th scope="col">Producto</th>
+                    <th scope="col">Cantidad</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    '.$tablaDetalle.'
+                    
+                    </tbody>
+                    </table>
+                
+                </div>
+                
+        </div>        ';
+        }
+        
+        
+
     }  
 
 
@@ -489,6 +583,12 @@ if(isset($_POST["pote"])){
         $buscarPedido->idPedido     = $_POST["idPedido"];
         $buscarPedido->buscarPedido();
         }
+
+    if(isset($_POST["idPedidoD"])){
+        $buscarPedido = new TablaPedidos();
+        $buscarPedido->idPedido     = $_POST["idPedidoD"];
+        $buscarPedido->buscarPedidoDetalle();
+        }    
 
     if(isset($_POST["idPedidoF"])){
         $buscarPedido = new TablaPedidos();
